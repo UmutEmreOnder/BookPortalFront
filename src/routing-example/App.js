@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import UserBooks from "./pages/UserBooks";
 import AuthorBooks from "./pages/AuthorBooks";
 import Update from "./pages/Update";
+import Register from "./pages/Register"
 
 const {Header, Content, Footer} = Layout;
 
@@ -18,18 +19,8 @@ export default function App() {
                     <div className="logo"/>
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
                         <Menu.Item key="1">
-                            <Link to="/">Home</Link>
+                            <Link to="/">Book Portal</Link>
                         </Menu.Item>
-                        <Menu.Item key="2">
-                            <Link to="/user-books">Books</Link>
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            <Link to="/update-profile">Update Profile</Link>
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            <Link to="/about">About</Link>
-                        </Menu.Item>
-
                     </Menu>
                 </Header>
                 <Content className="site-layout" style={{padding: "0 50px", marginTop: 64}}>
@@ -44,6 +35,7 @@ export default function App() {
                             <Route path='/user-books' element={<UserBooks/>}/>
                             <Route path='/author-books' element={<AuthorBooks/>}/>
                             <Route path='/about' element={<About/>}/>
+                            <Route path='/register' element={<Register/>}/>
                             <Route path='/' element={<Home/>}/>
                         </Routes>
                     </div>

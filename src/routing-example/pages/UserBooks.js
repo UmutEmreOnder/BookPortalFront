@@ -4,6 +4,7 @@ import {Table} from "antd";
 import UserBookService from "../service/UserBookService";
 import ReadListService from "../service/lists/ReadListService";
 import FavoriteListService from "../service/lists/FavoriteListService";
+import Search from "antd/es/input/Search";
 
 class PersonList extends React.Component {
     state = {
@@ -113,14 +114,27 @@ class PersonList extends React.Component {
     render() {
         const {data, pagination, loading, columns} = this.state;
         return (
-            <Table
-                columns={columns}
-                rowKey={(record) => record.id}
-                dataSource={data}
-                pagination={pagination}
-                loading={loading}
-                onChange={this.handleTableChange}
-            />
+            <>
+                <Search
+                    placeholder="input search text"
+                    allowClear
+                    onSearch={(value) => console.log(value)}
+                    style={{
+                        width: 200,
+                    }}
+                />
+
+                <br/> <br/> <br/>
+
+                <Table
+                    columns={columns}
+                    rowKey={(record) => record.id}
+                    dataSource={data}
+                    pagination={pagination}
+                    loading={loading}
+                    onChange={this.handleTableChange}
+                />
+            </>
         )
     }
 }

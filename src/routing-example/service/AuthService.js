@@ -15,10 +15,10 @@ const AuthService = (function () {
                 }
             });
         } catch (error) {
-
+            LocalStorageUtil.clearToken();
         }
 
-        return valid.data.roles[0].name;
+        return valid.data;
     };
 
     return {
