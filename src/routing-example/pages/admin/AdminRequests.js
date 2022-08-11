@@ -99,6 +99,10 @@ function AdminBookList() {
 
     return (
         <>
+            <div style={{textAlign: "center", margin: "25px"}}>
+                <h2>List of Requests</h2>
+            </div>
+
             <Table
                 columns={columns}
                 rowKey={(record) => record.id}

@@ -54,7 +54,7 @@ function AdminUserList() {
         {
             title: "Update",
             render: (text, record) => (
-                <Button onClick={() => navigate('/test')}>Update</Button>
+                <Button onClick={() => navigate('/author-update', {state: {value: record}})}>Update</Button>
             ),
         }
     ]
@@ -93,17 +93,9 @@ function AdminUserList() {
 
     return (
         <>
-            <Search
-                placeholder="input search text"
-                allowClear
-                onSearch={(value) => console.log(value)}
-                style={{
-                    width: 200,
-                }}
-            />
-
-            <br/> <br/> <br/>
-
+            <div style={{textAlign: "center", margin: "25px"}}>
+                <h2>List of Authors</h2>
+            </div>
             <Table
                 columns={columns}
                 rowKey={(record) => record.id}

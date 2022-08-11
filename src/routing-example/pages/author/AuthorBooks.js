@@ -20,7 +20,7 @@ const columns = [
     {
         title: "Genre",
         dataIndex: "genre",
-        render: (genre) => `${genre.name}`,
+        render: (genre) => `${genre.name.charAt(0).toUpperCase() + genre.name.toLowerCase().slice(1)}`,
         filters: [
             {text: "Action", value: "ACTION"},
             {text: "Classic", value: "CLASSIC"},
@@ -90,14 +90,9 @@ function AuthorBookList() {
 
     return (
         <>
-            <Search
-                placeholder="input search text"
-                allowClear
-                onSearch={(value) => console.log(value)}
-                style={{
-                    width: 200,
-                }}
-            />
+            <div style={{textAlign: "center", margin: "25px"}}>
+                <h2>List of Your Books</h2>
+            </div>
 
             <br/> <br/> <br/>
 
@@ -109,10 +104,6 @@ function AuthorBookList() {
                 loading={state.loading}
                 onChange={handleTableChange}
             />
-
-            <br/> <br/> <br/>
-
-            <Button onClick={() => navigate('/add-request')}>Add a Request</Button>
         </>
     )
 }

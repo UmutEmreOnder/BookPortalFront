@@ -2,8 +2,8 @@ import React from "react";
 import "antd/dist/antd.css";
 import {Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
-import ReadListService from "../../service/lists/ReadListService";
-import FavoriteListService from "../../service/lists/FavoriteListService";
+import ReadListService from "../../service/user/lists/ReadListService";
+import FavoriteListService from "../../service/user/lists/FavoriteListService";
 import Search from "antd/es/input/Search";
 
 class PersonList extends React.Component {
@@ -59,7 +59,7 @@ class PersonList extends React.Component {
             {
                 title: "Genre",
                 dataIndex: "genre",
-                render: (genre) => `${genre.name}`,
+                render: (genre) => `${genre.name.charAt(0).toUpperCase() + genre.name.toLowerCase().slice(1)}`,
                 filters: [
                     {text: "Action", value: "ACTION"},
                     {text: "Classic", value: "CLASSIC"},
@@ -115,16 +115,10 @@ class PersonList extends React.Component {
         const {data, pagination, loading, columns} = this.state;
         return (
             <>
-                <Search
-                    placeholder="input search text"
-                    allowClear
-                    onSearch={(value) => console.log(value)}
-                    style={{
-                        width: 200,
-                    }}
-                />
+                <div style={{textAlign: "center", margin: "25px"}}>
+                    <h2>List of Books</h2>
+                </div>
 
-                <br/> <br/> <br/>
 
                 <Table
                     columns={columns}

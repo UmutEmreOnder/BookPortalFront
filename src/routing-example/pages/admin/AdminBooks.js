@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Table} from "antd";
 import {useNavigate} from "react-router-dom";
-import Search from "antd/es/input/Search";
 import AdminBookService from "../../service/admin/AdminBookService";
 
 function AdminBookList() {
@@ -45,6 +44,11 @@ function AdminBookList() {
             onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
         },
         {
+            title: "Author",
+            dataIndex: "author",
+            render: (author) => `${author?.name} ${author?.surname}`
+        },
+        {
             title: "Read Count",
             dataIndex: "readCounter",
             sorter: (a, b) => a.readCounter - b.readCounter
@@ -66,7 +70,7 @@ function AdminBookList() {
         {
             title: "Update",
             render: (text, record) => (
-                <Button onClick={() => navigate('/test')}>Update</Button>
+                <Button onClick={() => navigate('/book-update', {state: {value: record}})}>Update</Button>
             ),
         }
     ]
@@ -106,16 +110,9 @@ function AdminBookList() {
 
     return (
         <>
-            <Search
-                placeholder="input search text"
-                allowClear
-                onSearch={(value) => console.log(value)}
-                style={{
-                    width: 200,
-                }}
-            />
-
-            <br/> <br/> <br/>
+            <div style={{textAlign: "center", margin: "25px"}}>
+                <h2>List of Books</h2>
+            </div>
 
             <Table
                 columns={columns}
@@ -125,10 +122,6 @@ function AdminBookList() {
                 loading={state.loading}
                 onChange={handleTableChange}
             />
-
-            <br/> <br/> <br/>
-
-            <Button onClick={() => navigate('/add-book')}>Add a Request</Button>
         </>
     )
 }

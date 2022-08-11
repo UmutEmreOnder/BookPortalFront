@@ -87,11 +87,14 @@ function AuthorRequest() {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{marginBottom: "50px"}}>
-                <Button style={{marginRight: "25px"}}>Requests</Button>
+                <Button style={{marginRight: "25px"}} disabled={true}>Requests</Button>
                 <Button onClick={() => navigate('/author-response')}>Responses</Button>
             </div>
 
-            <h2>Your current requests</h2>
+            <div style={{textAlign: "center", margin: "25px"}}>
+                <h2>List of Your Requests</h2>
+            </div>
+
             <Table
                 columns={requestColumns}
                 rowKey={(record) => record.id}
