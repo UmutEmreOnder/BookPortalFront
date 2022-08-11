@@ -45,6 +45,7 @@ function AuthorRequest() {
                 {text: "Sci-Fi", value: "SCI_FI"},
                 {text: "History", value: "HISTORY"},
             ],
+            render: (respond) => `${respond.charAt(0).toUpperCase() + respond.toLowerCase().slice(1)}`,
             onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
         }
     ]

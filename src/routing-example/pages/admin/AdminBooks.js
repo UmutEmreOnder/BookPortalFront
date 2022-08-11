@@ -32,7 +32,7 @@ function AdminBookList() {
         {
             title: "Genre",
             dataIndex: "genre",
-            render: (genre) => `${genre.name}`,
+            render: (genre) => `${genre.name.charAt(0).toUpperCase() + genre.name.toLowerCase().slice(1)}`,
             filters: [
                 {text: "Action", value: "ACTION"},
                 {text: "Classic", value: "CLASSIC"},
@@ -57,7 +57,10 @@ function AdminBookList() {
         {
             title: "Delete",
             render: (text, record) => (
-                <Button onClick={() => {AdminBookService.delete(record); window.location.reload()}}>Delete</Button>
+                <Button onClick={async () => {
+                    await AdminBookService.delete(record);
+                    handleTableChange(state.pagination)
+                }}>Delete</Button>
             ),
         },
         {
@@ -87,6 +90,7 @@ function AdminBookList() {
         })
 
         const data = await AdminBookService.fetchBooks(params);
+        console.log(data)
 
         setState(() => {
             return {

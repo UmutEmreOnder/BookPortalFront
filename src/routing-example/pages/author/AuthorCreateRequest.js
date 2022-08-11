@@ -1,51 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Button, Dropdown, Form, Input, Menu, message, Select, Space} from "antd";
+import {Button, Dropdown, Form, Input, Select} from "antd";
 import AuthorRequestService from "../../service/author/AuthorRequestService";
-import {DownOutlined} from "@ant-design/icons";
-import {Option} from "antd/es/mentions";
-
-const handleMenuClick = (e) => {
-    message.info('Click on menu item.');
-    console.log('click', e);
-};
-
-const menu = (
-    <Menu
-        onClick={handleMenuClick}
-        items={[
-            {
-                label: 'Action',
-                key: 'ACTION',
-            },
-            {
-                label: 'Classic',
-                key: 'CLASSIC',
-            },
-            {
-                label: 'Fantasy',
-                key: 'FANTASY',
-            },
-            {
-                label: 'Horror',
-                key: 'HORROR',
-            },
-            {
-                label: 'Romance',
-                key: 'ROMANCE',
-            },
-            {
-                label: 'Sci-Fi',
-                key: 'SCI_FI',
-            },
-            {
-                label: 'History',
-                key: 'HISTORY',
-            },
-
-        ]}
-    />
-);
 
 const Request = () => {
     const navigate = useNavigate();

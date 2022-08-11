@@ -33,6 +33,7 @@ function AdminBookList() {
         {
             title: "Genre",
             dataIndex: "genreName",
+            render: (genre) => `${genre.charAt(0).toUpperCase() + genre.toLowerCase().slice(1)}`,
             filters: [
                 {text: "Action", value: "ACTION"},
                 {text: "Classic", value: "CLASSIC"},
@@ -49,8 +50,15 @@ function AdminBookList() {
             render: (text, record) => {
                 return (
                     <>
-                        <Button onClick={() => {AdminRequestService.accept(record); window.location.reload()}} style={{marginRight: "20px"}}>Accept</Button>
-                        <Button onClick={() => {AdminRequestService.deny(record); window.location.reload()}}>Deny</Button>
+                        <Button onClick={async() => {
+                            await AdminRequestService.accept(record);
+                            handleTableChange(state.pagination)
+                        }} style={{marginRight: "20px"}}>Accept</Button>
+
+                        <Button onClick={async () => {
+                            await AdminRequestService.deny(record);
+                            handleTableChange(state.pagination)
+                        }}>Deny</Button>
                     </>
                 )
             }

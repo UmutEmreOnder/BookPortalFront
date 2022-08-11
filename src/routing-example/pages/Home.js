@@ -122,7 +122,7 @@ function welcomeAdmin({state, setState, navigate}) {
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-user')}}>List Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-books')}}>List Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-users')}}>List Users</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-authors')}}>List Authors</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-requests')}}>List Requests</Button>

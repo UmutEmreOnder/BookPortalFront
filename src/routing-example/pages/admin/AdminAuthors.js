@@ -45,7 +45,10 @@ function AdminUserList() {
         {
             title: "Delete",
             render: (text, record) => (
-                <Button onClick={() => {AdminAuthorService.delete(record); window.location.reload()}}>Delete</Button>
+                <Button onClick={async () => {
+                    await AdminAuthorService.delete(record);
+                    handleTableChange(state.pagination)
+                }}>Delete</Button>
             ),
         },
         {
