@@ -5,6 +5,10 @@ import AuthService from "../service/AuthService";
 import LocalStorageUtil from "../util/SessionStorageUtil";
 import UserService from "../service/user/UserService";
 import React from "react";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import ToastifyUtil from "../util/ToastifyUtil";
+import MessageUtil from "../util/MessageUtil";
 
 const Home = () => {
     const navigation = useNavigate();
@@ -15,9 +19,11 @@ const Home = () => {
         const response = await AuthService.signin(credentials);
 
         if (response) {
-            window.location.reload();
+            ToastifyUtil.success(MessageUtil.loginSuccess());
+            await ToastifyUtil.sleep(2000);
+            window.location.reload()
         } else {
-            console.log("Boyle bi user yok")
+            ToastifyUtil.error(MessageUtil.loginFailed());
         }
     };
 
@@ -55,11 +61,21 @@ const Home = () => {
                         </Form.Item>
 
                         <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
+                            <Button type="primary" htmlType="submit">Submit</Button>
                         </Form.Item>
                     </Form>
+
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={2500}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                 </>
             )
         } else {

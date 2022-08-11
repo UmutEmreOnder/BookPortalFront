@@ -5,6 +5,10 @@ import UserService from "../../service/user/UserService";
 import LocalStorageUtil from "../../util/SessionStorageUtil";
 import Password from "antd/es/input/Password";
 import AuthorService from "../../service/author/AuthorService";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import {ToastContainer} from "react-toastify";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
@@ -22,14 +26,17 @@ const UpdateAuthor = () => {
 
 
     const onFinish = async () => {
-        console.log(credentials)
-
         const response = await AuthorService.updateAuthor(credentials);
 
+
         if (response) {
+            ToastifyUtil.success(MessageUtil.updateProfileSuccess())
+            ToastifyUtil.info(MessageUtil.logOut())
+            await ToastifyUtil.sleep(2500)
+            SessionStorageUtil.clearToken()
             navigate('/')
         } else {
-            console.log("Bi hata aldin ama nie?")
+            ToastifyUtil.error(MessageUtil.updateProfileFailed())
         }
     };
 
@@ -90,6 +97,18 @@ const UpdateAuthor = () => {
                     </Button>
                 </Form.Item>
             </Form>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

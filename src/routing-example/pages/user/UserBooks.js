@@ -5,6 +5,9 @@ import UserBookService from "../../service/user/UserBookService";
 import ReadListService from "../../service/user/lists/ReadListService";
 import FavoriteListService from "../../service/user/lists/FavoriteListService";
 import Search from "antd/es/input/Search";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import {ToastContainer} from "react-toastify";
 
 class PersonList extends React.Component {
     state = {
@@ -79,13 +82,19 @@ class PersonList extends React.Component {
             {
                 title: 'Read List',
                 render: (text, record) => (
-                    <input type={"checkbox"} defaultChecked={this.checkReadList(record)} onClick={() => ReadListService.addOrDrop(record)}/>
+                    <input type={"checkbox"} defaultChecked={this.checkReadList(record)} onClick={async () => {
+                        const response = await ReadListService.addOrDrop(record);
+                        response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
+                    }}/>
                 ),
             },
             {
                 title: 'Favorite List',
                 render: (text, record) => (
-                    <input type={"checkbox"} defaultChecked={this.checkFavoriteList(record)} onClick={() => FavoriteListService.addOrDrop(record)}/>
+                    <input type={"checkbox"} defaultChecked={this.checkFavoriteList(record)} onClick={async () => {
+                        const response = await FavoriteListService.addOrDrop(record)
+                        response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
+                    }}/>
                 ),
             }]
         });
@@ -127,6 +136,18 @@ class PersonList extends React.Component {
                     pagination={pagination}
                     loading={loading}
                     onChange={this.handleTableChange}
+                />
+
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={2500}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
                 />
             </>
         )

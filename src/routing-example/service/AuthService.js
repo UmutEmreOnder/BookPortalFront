@@ -16,6 +16,7 @@ const AuthService = (function () {
             });
         } catch (error) {
             LocalStorageUtil.clearToken();
+            return null;
         }
 
         return valid.data;

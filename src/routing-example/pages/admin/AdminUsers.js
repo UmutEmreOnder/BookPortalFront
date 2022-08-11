@@ -5,6 +5,9 @@ import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
 import AdminBookService from "../../service/admin/AdminBookService";
 import AdminUserService from "../../service/admin/AdminUserService";
+import {ToastContainer} from "react-toastify";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
 
 function AdminUserList() {
     const navigate = useNavigate();
@@ -48,6 +51,7 @@ function AdminUserList() {
             render: (text, record) => (
                 <Button onClick={async () => {
                     await AdminUserService.delete(record);
+                    ToastifyUtil.success(MessageUtil.deleteUserSuccess())
                     handleTableChange(state.pagination)
                 }}>Delete</Button>
             ),
@@ -55,7 +59,7 @@ function AdminUserList() {
         {
             title: "Update",
             render: (text, record) => (
-                <Button onClick={() => navigate('/user-update', {state: {value: record}})}>Update</Button>
+                <Button onClick={() => navigate('/admin-update-user', {state: {value: record}})}>Update</Button>
             ),
         }
     ]
@@ -105,6 +109,18 @@ function AdminUserList() {
                 pagination={state.pagination}
                 loading={state.loading}
                 onChange={handleTableChange}
+            />
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
         </>
     )

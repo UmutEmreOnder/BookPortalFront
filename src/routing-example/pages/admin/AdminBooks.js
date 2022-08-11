@@ -3,6 +3,9 @@ import "antd/dist/antd.css";
 import {Button, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import AdminBookService from "../../service/admin/AdminBookService";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import {ToastContainer} from "react-toastify";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -63,6 +66,7 @@ function AdminBookList() {
             render: (text, record) => (
                 <Button onClick={async () => {
                     await AdminBookService.delete(record);
+                    ToastifyUtil.success(MessageUtil.deleteBookSuccess())
                     handleTableChange(state.pagination)
                 }}>Delete</Button>
             ),
@@ -94,7 +98,6 @@ function AdminBookList() {
         })
 
         const data = await AdminBookService.fetchBooks(params);
-        console.log(data)
 
         setState(() => {
             return {
@@ -121,6 +124,18 @@ function AdminBookList() {
                 pagination={state.pagination}
                 loading={state.loading}
                 onChange={handleTableChange}
+            />
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
         </>
     )

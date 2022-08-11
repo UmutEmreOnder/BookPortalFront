@@ -10,6 +10,8 @@ const ReadListService = (function () {
                     "Authorization": `Basic ${localStorageUtil.getToken()}`
                 }
             });
+
+            return "DELETE";
         } else {
             await axios.post(`http://localhost:8080/api/user/book/read?name=${records.name}`, {}, {
                 withCredentials: true,
@@ -17,6 +19,7 @@ const ReadListService = (function () {
                     "Authorization": `Basic ${localStorageUtil.getToken()}`
                 }
             });
+            return "ADD";
         }
     };
 

@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Table} from "antd";
 import AdminRequestService from "../../service/admin/AdminRequestService";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import {ToastContainer} from "react-toastify";
 
 function AdminBookList() {
     const [state, setState] = useState({
@@ -57,11 +60,13 @@ function AdminBookList() {
                     <>
                         <Button onClick={async() => {
                             await AdminRequestService.accept(record);
+                            ToastifyUtil.success(MessageUtil.acceptRequest())
                             handleTableChange(state.pagination)
                         }} style={{marginRight: "20px"}}>Accept</Button>
 
                         <Button onClick={async () => {
                             await AdminRequestService.deny(record);
+                            ToastifyUtil.success(MessageUtil.denyRequest())
                             handleTableChange(state.pagination)
                         }}>Deny</Button>
                     </>
@@ -115,6 +120,18 @@ function AdminBookList() {
                 pagination={state.pagination}
                 loading={state.loading}
                 onChange={handleTableChange}
+            />
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
             />
         </>
     )

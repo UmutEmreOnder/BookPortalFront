@@ -6,6 +6,10 @@ import LocalStorageUtil from "../../util/SessionStorageUtil";
 import Password from "antd/es/input/Password";
 import AuthorService from "../../service/author/AuthorService";
 import BookService from "../../service/book/BookService";
+import {ToastContainer} from "react-toastify";
+import React from "react";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
 
 const UpdateBook = () => {
     const navigate = useNavigate();
@@ -21,15 +25,10 @@ const UpdateBook = () => {
 
 
     const onFinish = async () => {
-        console.log(credentials)
-
-        const response = await BookService.updateBook(credentials);
-
-        if (response) {
-            navigate('/')
-        } else {
-            console.log("Bi hata aldin ama nie?")
-        }
+        await BookService.updateBook(credentials);
+        ToastifyUtil.success(MessageUtil.updateBookSuccess())
+        await ToastifyUtil.sleep(1500)
+        navigate('/admin-books')
     };
 
 
@@ -92,6 +91,18 @@ const UpdateBook = () => {
                     </Button>
                 </Form.Item>
             </Form>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

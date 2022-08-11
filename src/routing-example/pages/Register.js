@@ -1,25 +1,31 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import UserService from "../service/user/UserService";
 import {Button, Form, Input} from "antd";
+import ToastifyUtil from "../util/ToastifyUtil";
+import MessageUtil from "../util/MessageUtil";
+import {ToastContainer} from "react-toastify";
+import React from "react";
 
 const Register = () => {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({});
 
     const onFinish = async (values) => {
+        debugger
         const response = await UserService.register(credentials);
 
         if (response) {
+            ToastifyUtil.success(MessageUtil.registerSuccess())
+            await ToastifyUtil.sleep(2500);
             navigate('/')
         } else {
-            console.log("Bi hata aldin ama nie?")
+            ToastifyUtil.error(MessageUtil.registerFailed())
         }
     };
 
-
     const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
+        ToastifyUtil.error(MessageUtil.registerFailed())
     };
 
     const handleChange = (event) => {
@@ -68,13 +74,26 @@ const Register = () => {
                            rules={[{required: true, message: "Please input your password!"}]}>
                     <Input.Password onChange={handleChange} name="password" value={credentials.password}/>
                 </Form.Item>
-
+                <p style={{color: "gray", marginLeft: "150px"}}>Must be 3-20 characters long</p>
+                <br/> <br/>
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
                     <Button type="primary" htmlType="submit">
                         Submit
                     </Button>
                 </Form.Item>
             </Form>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

@@ -24,18 +24,28 @@ const UserService = (function () {
     };
 
     const _register = async (credentials) => {
-        return await axios.post('http://localhost:8080/api/user/', credentials)
+        let response = null;
+        try {
+            response = await axios.post('http://localhost:8080/api/user/', credentials)
+        } catch (error) {
+            return null;
+        }
+
+        return response;
     }
 
     const _updateUser = async (credentials) => {
-        const response = await axios.put(`http://localhost:8080/api/user/?id=${credentials.id}`, credentials, {
-            withCredentials: true,
-            headers: {
-                "Authorization": `Basic ${LocalStorageUtil.getToken()}`
-            }
-        })
-
-        return response.data;
+        try {
+            const response = await axios.put(`http://localhost:8080/api/user/?id=${credentials.id}`, credentials, {
+                withCredentials: true,
+                headers: {
+                    "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                }
+            })
+            return response.data
+        } catch (error) {
+            return null;
+        }
     }
 
 

@@ -1,7 +1,11 @@
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {Button, Dropdown, Form, Input, Select} from "antd";
+import {useState} from "react";
+import {Button, Form, Input, Select} from "antd";
 import AuthorRequestService from "../../service/author/AuthorRequestService";
+import {ToastContainer} from "react-toastify";
+import React from "react";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
 
 const Request = () => {
     const navigate = useNavigate();
@@ -11,6 +15,8 @@ const Request = () => {
         const response = await AuthorRequestService.create(credentials);
 
         if (response) {
+            ToastifyUtil.success(MessageUtil.requestSuccess())
+            await ToastifyUtil.sleep(2500)
             navigate('/')
         } else {
             console.log("Bi hata aldin ama nie?")
@@ -65,16 +71,24 @@ const Request = () => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item>
-
-                </Form.Item>
-
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
                     <Button type="primary" htmlType="submit">
                         Submit
                     </Button>
                 </Form.Item>
             </Form>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }

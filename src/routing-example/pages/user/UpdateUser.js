@@ -2,6 +2,10 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {Button, Form, Input} from "antd";
 import UserService from "../../service/user/UserService";
+import {ToastContainer} from "react-toastify";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import SessionStorageService from "../../util/SessionStorageUtil";
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -19,14 +23,16 @@ const UpdateUser = () => {
 
 
     const onFinish = async () => {
-        console.log(credentials)
-
         const response = await UserService.updateUser(credentials);
 
         if (response) {
+            ToastifyUtil.success(MessageUtil.updateProfileSuccess())
+            ToastifyUtil.info(MessageUtil.logOut())
+            await ToastifyUtil.sleep(2500)
+            SessionStorageService.clearToken()
             navigate('/')
         } else {
-            console.log("Bi hata aldin ama nie?")
+            ToastifyUtil.error(MessageUtil.updateProfileFailed())
         }
     };
 
@@ -87,6 +93,18 @@ const UpdateUser = () => {
                     </Button>
                 </Form.Item>
             </Form>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </>
     )
 }
