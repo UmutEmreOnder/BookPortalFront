@@ -25,18 +25,43 @@ const UserBookService = (function () {
         return response.data;
     };
 
-    const _delete = async () => {
-        const response = await axios.delete(
-            "http://localhost:8080/api/user/admin",
-            {}
-        );
+    const _fetchReadBooks = async (params) => {
+        const response = await axios.get("http://localhost:8080/api/user/book/read", {
+            withCredentials: true,
+            params: {
+                results: params.pagination.pageSize,
+                page: params.pagination.current,
+                ...params
+            },
+            headers: {
+                "Authorization": `Basic ${localStorageUtil.getToken()}`
+            }
+        })
 
         return response.data;
-    };
+    }
+
+    const _fetchFavoriteBooks = async (params) => {
+        const response = await axios.get("http://localhost:8080/api/user/book/favorite", {
+            withCredentials: true,
+            params: {
+                results: params.pagination.pageSize,
+                page: params.pagination.current,
+                ...params
+            },
+            headers: {
+                "Authorization": `Basic ${localStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
 
     return {
         fetchBooks: _fetchBooks,
-        delete: _delete
+        fetchReadBooks: _fetchReadBooks,
+        fetchFavoriteBooks: _fetchFavoriteBooks
     };
 })();
 
