@@ -1,9 +1,9 @@
 import axios from "axios";
-import localStorageUtil from "../util/LocalStorageUtil";
+import localStorageUtil from "../../util/LocalStorageUtil";
 
-const UserBookService = (function () {
+const AdminBookService = (function () {
     const _fetchBooks = async (params) => {
-        const response = await axios.get("http://localhost:8080/api/user/book", {
+        const response = await axios.get("http://localhost:8080/api/admin/book", {
             withCredentials: true,
             params: {
                 results: params.pagination.pageSize,
@@ -25,11 +25,13 @@ const UserBookService = (function () {
         return response.data;
     };
 
-    const _delete = async () => {
-        const response = await axios.delete(
-            "http://localhost:8080/api/user/admin",
-            {}
-        );
+    const _delete = async (record) => {
+        const response = await axios.delete(`http://localhost:8080/api/admin/book?id=${record.id}`, {
+            withCredentials: true,
+            headers: {
+                "Authorization": `Basic ${localStorageUtil.getToken()}`
+            }
+        });
 
         return response.data;
     };
@@ -40,4 +42,4 @@ const UserBookService = (function () {
     };
 })();
 
-export default UserBookService;
+export default AdminBookService;

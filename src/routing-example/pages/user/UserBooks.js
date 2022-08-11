@@ -1,9 +1,9 @@
 import React from "react";
 import "antd/dist/antd.css";
 import {Table} from "antd";
-import UserBookService from "../service/UserBookService";
-import ReadListService from "../service/lists/ReadListService";
-import FavoriteListService from "../service/lists/FavoriteListService";
+import UserBookService from "../../service/bookService/UserBookService";
+import ReadListService from "../../service/lists/ReadListService";
+import FavoriteListService from "../../service/lists/FavoriteListService";
 import Search from "antd/es/input/Search";
 
 class PersonList extends React.Component {

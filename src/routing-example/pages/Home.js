@@ -4,13 +4,14 @@ import {useEffect, useState} from "react";
 import AuthService from "../service/AuthService";
 import LocalStorageUtil from "../util/LocalStorageUtil";
 import UserService from "../service/UserService";
+import React from "react";
 
 const Home = () => {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({});
     const [state, setState] = useState({});
 
-    const onFinish = async (values) => {
+    const onFinish = async () => {
         const response = await AuthService.signin(credentials);
 
         if (response) {
@@ -62,14 +63,14 @@ const Home = () => {
                 </>
             )
         } else {
-            return (state.value.roles[0].id === 1 ? welcomeAuthor({state, navigate}) : welcomeUser({state, navigate}))
+            return (state?.value?.roles[0]?.id === 1 ? welcomeAdmin({state, setState, navigate}) : welcomeUser({state, setState, navigate}))
         }
     }
 
     return (result({onFinish, onFinishFailed, handleChange, credentials}));
 };
 
-function welcomeUser({state, navigate}) {
+function welcomeUser({state, setState, navigate}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
@@ -77,29 +78,40 @@ function welcomeUser({state, navigate}) {
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => {
                     if(state.value.roles[0].id === 2) {
-                        navigate('/user-books')
+                        navigate('/user-user')
                     } else {
-                        navigate('/author-books')
+                        navigate('/author-user')
                     }
                 }}>Search Books</Button>
                 <Button onClick={() => navigate('/update-profile')}>Update Profile</Button>
             </div>
             <br/> <br/> <br/> <br/>
-            <Button onClick={() => {LocalStorageUtil.clearToken(); navigate('/')}}>Log Out</Button>
+            <Button onClick={() => {
+                LocalStorageUtil.clearToken();
+                navigate('/')
+                setState({})
+            }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAuthor({state, navigate}) {
+function welcomeAdmin({state, setState, navigate}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-books')}}>Search Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-user')}}>List Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-users')}}>List Users</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-authors')}}>List Authors</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-requests')}}>List Requests</Button>
             </div>
             <br/> <br/> <br/> <br/>
-            <Button onClick={() => {LocalStorageUtil.clearToken(); navigate('/')}}>Log Out</Button>
+            <Button onClick={() => {
+                LocalStorageUtil.clearToken();
+                navigate('/');
+                setState({})
+            }}>Log Out</Button>
         </div>
     )
 }

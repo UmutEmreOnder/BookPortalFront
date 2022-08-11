@@ -27,9 +27,10 @@ const UserService = (function () {
         return await axios.post('http://localhost:8080/api/user/', credentials)
     }
 
+
     return {
         getUser: _getUser(),
-        register: _register
+        register: _register,
     };
 })();
 

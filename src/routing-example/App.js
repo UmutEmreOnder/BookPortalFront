@@ -4,10 +4,14 @@ import "antd/dist/antd.css";
 import "../styles.css";
 import {Layout, Menu, Breadcrumb} from "antd";
 import Home from "./pages/Home";
-import UserBooks from "./pages/UserBooks";
-import AuthorBooks from "./pages/AuthorBooks";
+import UserBooks from "./pages/user/UserBooks";
+import AuthorBooks from "./pages/author/AuthorBooks";
 import Update from "./pages/Update";
 import Register from "./pages/Register"
+import AdminBooks from "./pages/admin/AdminBooks";
+import AdminUsers from "./pages/admin/AdminUsers"
+import AdminAuthors from "./pages/admin/AdminAuthors";
+import AdminRequest from "./pages/admin/AdminRequests";
 
 const {Header, Content, Footer} = Layout;
 
@@ -34,6 +38,10 @@ export default function App() {
                             <Route path='/update-profile' element={<Update/>}/>
                             <Route path='/user-books' element={<UserBooks/>}/>
                             <Route path='/author-books' element={<AuthorBooks/>}/>
+                            <Route path='/admin-books' element={<AdminBooks/>}/>
+                            <Route path='/admin-users' element={<AdminUsers/>}/>
+                            <Route path='/admin-authors' element={<AdminAuthors/>}/>
+                            <Route path='/admin-requests' element={<AdminRequest/>}/>
                             <Route path='/about' element={<About/>}/>
                             <Route path='/register' element={<Register/>}/>
                             <Route path='/' element={<Home/>}/>

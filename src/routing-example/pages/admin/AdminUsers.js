@@ -1,50 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Table} from "antd";
-import AuthorBookService from "../service/AuthorBookService";
 import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
+import AdminBookService from "../../service/admin/AdminBookService";
+import AdminUserService from "../../service/admin/AdminUserService";
 
-const columns = [
-    {
-        title: "Name",
-        dataIndex: "name",
-        sorter: (a, b) => a.name.localeCompare(b.name),
-        width: "20%"
-    },
-    {
-        title: "ISBN",
-        dataIndex: "isbn",
-        width: "20%"
-    },
-    {
-        title: "Genre",
-        dataIndex: "genre",
-        render: (genre) => `${genre.name}`,
-        filters: [
-            {text: "Action", value: "ACTION"},
-            {text: "Classic", value: "CLASSIC"},
-            {text: "Fantasy", value: "FANTASY"},
-            {text: "Horror", value: "HORROR"},
-            {text: "Romance", value: "ROMANCE"},
-            {text: "Sci-Fi", value: "SCI_FI"},
-            {text: "History", value: "HISTORY"},
-        ],
-        onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
-    },
-    {
-        title: "Read Count",
-        dataIndex: "readCounter",
-        sorter: (a, b) => a.readCounter - b.readCounter
-    },
-    {
-        title: "Favorite Count",
-        dataIndex: "favoriteCounter",
-        sorter: (a, b) => a.favoriteCounter - b.favoriteCounter
-    }
-];
-
-function AuthorBookList() {
+function AdminUserList() {
     const navigate = useNavigate();
 
     const [state, setState] = useState({
@@ -53,8 +15,47 @@ function AuthorBookList() {
             current: 1,
             pageSize: 10
         },
-        loading: false,
+        loading:  false,
     })
+
+    const columns = [
+        {
+            title: "Name",
+            dataIndex: "name",
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            width: "20%"
+        },
+        {
+            title: "Surname",
+            dataIndex: "surname",
+            width: "20%"
+        },
+        {
+            title: "Age",
+            dataIndex: "age",
+            sorter: (a, b) => a.age - b.age
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+        },
+        {
+            title: "Username",
+            dataIndex: "username",
+        },
+        {
+            title: "Delete",
+            render: (text, record) => (
+                <Button onClick={() => {AdminUserService.delete(record); window.location.reload()}}>Delete</Button>
+            ),
+        },
+        {
+            title: "Update",
+            render: (text, record) => (
+                <Button onClick={() => navigate('/test')}>Update</Button>
+            ),
+        }
+    ]
 
     useEffect(() => {
         const {pagination} = state;
@@ -75,13 +76,13 @@ function AuthorBookList() {
             }
         })
 
-        const data = await AuthorBookService.fetchBooks(params);
+        const data = await AdminUserService.fetchUsers(params);
 
-        setState(prevState => {
+        setState(() => {
             return {
                 data: data,
                 pagination: {
-                    ...params.pagination,
+                    ...params?.pagination,
                     total: data.length
                 },
                 loading: false
@@ -110,12 +111,8 @@ function AuthorBookList() {
                 loading={state.loading}
                 onChange={handleTableChange}
             />
-
-            <br/> <br/> <br/>
-
-            <Button onClick={() => navigate('/add-book')}>Add a Request</Button>
         </>
     )
 }
 
-export default AuthorBookList;
+export default AdminUserList;
