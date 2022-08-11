@@ -3,35 +3,21 @@ import localStorageUtil from "../../util/SessionStorageUtil";
 
 const AuthorBookService = (function () {
     const _fetchBooks = async (params) => {
-        if (params.search) {
-            const response = await axios.get(`http://localhost:8080/api/author/book/like/${params.search}`, {
-                withCredentials: true,
-                params: {
-                    results: params.pagination.pageSize,
-                    page: params.pagination.current,
-                    ...params
-                },
-                headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
-                }
-            });
+        const url = params.search ? `http://localhost:8080/api/author/book/like/${params.search}` : `http://localhost:8080/api/author/book/`;
 
-            return response.data;
-        } else {
-            const response = await axios.get(`http://localhost:8080/api/author/book/`, {
-                withCredentials: true,
-                params: {
-                    results: params.pagination.pageSize,
-                    page: params.pagination.current,
-                    ...params
-                },
-                headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
-                }
-            });
+        const response = await axios.get(url, {
+            withCredentials: true,
+            params: {
+                results: params.pagination.pageSize,
+                page: params.pagination.current,
+                ...params
+            },
+            headers: {
+                "Authorization": `Basic ${localStorageUtil.getToken()}`
+            }
+        });
 
-            return response.data;
-        }
+        return response.data;
     };
 
     return {

@@ -3,35 +3,21 @@ import localStorageUtil from "../../util/SessionStorageUtil";
 
 const AdminUserService = (function () {
     const _getUsers = async (params) => {
-        if (params.search) {
-            const response = await axios.get(`http://localhost:8080/api/admin/user/like/${params.search}`, {
-                withCredentials: true,
-                params: {
-                    results: params.pagination.pageSize,
-                    page: params.pagination.current,
-                    ...params
-                },
-                headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
-                }
-            });
+        const url = params.search ? `http://localhost:8080/api/admin/user/like/${params.search}` : `http://localhost:8080/api/admin/user/`;
 
-            return response.data;
-        } else {
-            const response = await axios.get(`http://localhost:8080/api/admin/user/`, {
-                withCredentials: true,
-                params: {
-                    results: params.pagination.pageSize,
-                    page: params.pagination.current,
-                    ...params
-                },
-                headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
-                }
-            });
+        const response = await axios.get(url, {
+            withCredentials: true,
+            params: {
+                results: params.pagination.pageSize,
+                page: params.pagination.current,
+                ...params
+            },
+            headers: {
+                "Authorization": `Basic ${localStorageUtil.getToken()}`
+            }
+        });
 
-            return response.data;
-        }
+        return response.data;
     };
 
     const _delete = async (record) => {
