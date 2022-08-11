@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Table} from "antd";
+import {Button, Input, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
 import AdminAuthorService from "../../service/admin/AdminAuthorService";
 import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
+import {debounce} from "lodash";
 
 function AdminUserList() {
     const navigate = useNavigate();
@@ -72,6 +73,14 @@ function AdminUserList() {
         fetch({pagination});
     }
 
+    const onChange = async (e) => {
+        const {pagination} = state
+
+        fetch({pagination: pagination, search: e.target.value})
+    }
+
+    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+
     async function fetch(params) {
         setState(prevState => {
             return {
@@ -100,6 +109,15 @@ function AdminUserList() {
             <div style={{textAlign: "center", margin: "25px"}}>
                 <h2>List of Authors</h2>
             </div>
+
+            <Input
+                placeholder="Name"
+                onChange={debouncedSearch}
+                size={"large"}
+            />
+
+            <br/> <br/>
+
             <Table
                 columns={columns}
                 rowKey={(record) => record.id}
