@@ -52,7 +52,7 @@ function AuthorBookList() {
         data: [],
         pagination: {
             current: 1,
-            pageSize: 10
+            pageSize: 5
         },
         loading: false,
     })
