@@ -7,7 +7,7 @@ import UserService from "../service/user/UserService";
 import React from "react";
 
 const Home = () => {
-    const navigate = useNavigate();
+    const navigation = useNavigate();
     const [credentials, setCredentials] = useState({});
     const [state, setState] = useState({});
 
@@ -42,8 +42,8 @@ const Home = () => {
             return (
                 <>
                     <div style={{textAlign: "right", marginRight: "200px"}}>
-                        <Button onClick={() => navigate('/')} style={{marginRight: "25px"}}>Login</Button>
-                        <Button onClick={() => navigate('/register')}>Register</Button>
+                        <Button onClick={() => navigation('/')} style={{marginRight: "25px"}} disabled={true}>Login</Button>
+                        <Button onClick={() => navigation('/register')}>Register</Button>
                     </div>
                     <Form name="basic" labelCol={{span: 8}} wrapperCol={{span: 16}} initialValues={{remember: true}} onFinish={onFinish} onFinishFailed={onFinishFailed} style={{margin: "0 auto", width: 400, marginTop: "70px"}}>
                         <Form.Item label="Username" name="username" rules={[{required: true, message: "Please input your username!"}]}>
@@ -65,11 +65,11 @@ const Home = () => {
         } else {
             const id = state?.value?.roles[0]?.id;
             if(id === 1) {
-                return welcomeAdmin({state, setState, navigate})
+                return welcomeAdmin({state, setState, navigation})
             } else if (id === 2) {
-                return welcomeUser({state, setState, navigate})
+                return welcomeUser({state, setState, navigation})
             } else {
-                return welcomeAuthor({state, setState, navigate})
+                return welcomeAuthor({state, setState, navigation})
             }
         }
     }
@@ -77,60 +77,68 @@ const Home = () => {
     return (result({onFinish, onFinishFailed, handleChange, credentials}));
 };
 
-function welcomeUser({state, setState, navigate}) {
+
+function welcomeUser({state, setState, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => navigate('/user-books')}>Search Books</Button>
-                <Button onClick={() => navigate('/update-profile')}>Update Profile</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-books')}>Search Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-read')}>Your Read List</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-favorite')}>Your Favorite List</Button>
+                <Button onClick={() => navigation(`/user-update`, {state})}>Update Profile</Button>
             </div>
+
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
                 LocalStorageUtil.clearToken();
-                navigate('/')
+                navigation('/')
                 setState({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAuthor({state, setState, navigate}) {
+function welcomeAuthor({state, setState, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => navigate('/author-books')}>Your Books</Button>
-                <Button style={{marginRight: "25px"}} onClick={() => navigate('/author-request')}>Your Requests</Button>
-                <Button onClick={() => navigate('/update-profile')}>Update Profile</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-books')}>Your Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-request')}>Your Requests</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigation('/add-request')}>Add a Request</Button>
+                <Button onClick={() => navigation('/author-update', {state})}>Update Profile</Button>
             </div>
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
                 LocalStorageUtil.clearToken();
-                navigate('/')
+                navigation('/')
                 setState({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAdmin({state, setState, navigate}) {
+function welcomeAdmin({state, setState, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-books')}}>List Books</Button>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-users')}}>List Users</Button>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-authors')}}>List Authors</Button>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigate('/admin-requests')}}>List Requests</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-books')}}>List Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-users')}}>List Users</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-authors')}}>List Authors</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-requests')}}>List Requests</Button>
+            </div>
+            <div style={{textAlign: "center", marginTop: "70px"}}>
+                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/author-create')}}>Create Author</Button>
             </div>
             <br/> <br/> <br/> <br/>
-            <Button onClick={() => {
+            <Button style={{marginRight: "25px"}} onClick={() => {
                 LocalStorageUtil.clearToken();
-                navigate('/');
+                navigation('/');
                 setState({})
             }}>Log Out</Button>
         </div>

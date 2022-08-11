@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageUtil from "../../util/LocalStorageUtil";
+import localStorageUtil from "../../../util/LocalStorageUtil";
 
 const ReadListService = (function () {
     const _addOrDrop = async (records) => {

@@ -33,7 +33,7 @@ const Register = () => {
         <>
             <div style={{textAlign: "right", marginRight: "200px"}}>
                 <Button onClick={() => navigate('/')} style={{marginRight: "25px"}} >Login</Button>
-                <Button onClick={() => navigate('/register')}>Register</Button>
+                <Button onClick={() => navigate('/register')} disabled={true}>Register</Button>
             </div>
             <Form name="basic" labelCol={{span: 8}} wrapperCol={{span: 16}} initialValues={{remember: true}}
                   onFinish={onFinish} onFinishFailed={onFinishFailed}
