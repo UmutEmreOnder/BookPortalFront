@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Table} from "antd";
+import {Button, Input, Table} from "antd";
 import AuthorBookService from "../../service/author/AuthorBookService";
 import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
+import {debounce} from "lodash";
 
 const columns = [
     {
@@ -65,6 +66,14 @@ function AuthorBookList() {
         fetch({pagination});
     }
 
+    const onChange = async (e) => {
+        const {pagination} = state
+
+        fetch({pagination: pagination, search: e.target.value})
+    }
+
+    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+
     async function fetch(params) {
         setState(prevState => {
             return {
@@ -94,7 +103,13 @@ function AuthorBookList() {
                 <h2>List of Your Books</h2>
             </div>
 
-            <br/> <br/> <br/>
+            <Input
+                placeholder="Book Name"
+                onChange={debouncedSearch}
+                size={"large"}
+            />
+
+            <br/> <br/>
 
             <Table
                 columns={columns}

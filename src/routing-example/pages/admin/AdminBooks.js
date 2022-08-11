@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Table} from "antd";
+import {Button, Input, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import AdminBookService from "../../service/admin/AdminBookService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
+import UserBookService from "../../service/user/UserBookService";
+import {debounce} from "lodash";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -88,6 +90,14 @@ function AdminBookList() {
         fetch({pagination});
     }
 
+    const onChange = async (e) => {
+        const {pagination} = state
+
+        fetch({pagination: pagination, search: e.target.value})
+    }
+
+    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+
     async function fetch(params) {
         setState(prevState => {
             return {
@@ -97,7 +107,7 @@ function AdminBookList() {
             }
         })
 
-        const data = await AdminBookService.fetchBooks(params);
+        const data = await UserBookService.fetchBooks(params);
 
         setState(() => {
             return {
@@ -116,6 +126,14 @@ function AdminBookList() {
             <div style={{textAlign: "center", margin: "25px"}}>
                 <h2>List of Books</h2>
             </div>
+
+            <Input
+                placeholder="Book Name"
+                onChange={debouncedSearch}
+                size={"large"}
+            />
+
+            <br/> <br/>
 
             <Table
                 columns={columns}

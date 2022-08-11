@@ -3,26 +3,35 @@ import localStorageUtil from "../../util/SessionStorageUtil";
 
 const UserBookService = (function () {
     const _fetchBooks = async (params) => {
-        const response = await axios.get("http://localhost:8080/api/user/book", {
-            withCredentials: true,
-            params: {
-                results: params.pagination.pageSize,
-                page: params.pagination.current,
-                ...params
-            },
-            headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
-            }
-        });
+        if (params.search) {
+            const response = await axios.get(`http://localhost:8080/api/user/book/like/${params.search}`, {
+                withCredentials: true,
+                params: {
+                    results: params.pagination.pageSize,
+                    page: params.pagination.current,
+                    ...params
+                },
+                headers: {
+                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                }
+            });
 
-        if (!response) {
-            console.log("Bir hata oluştu");
-            //ToDo: Display error message to user not just log it
-            //Ex: https://www.npmjs.com/package/react-toastify
-            return;
+            return response.data;
+        } else {
+            const response = await axios.get(`http://localhost:8080/api/user/book/`, {
+                withCredentials: true,
+                params: {
+                    results: params.pagination.pageSize,
+                    page: params.pagination.current,
+                    ...params
+                },
+                headers: {
+                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                }
+            });
+
+            return response.data;
         }
-
-        return response.data;
     };
 
     const _fetchReadBooks = async (params) => {

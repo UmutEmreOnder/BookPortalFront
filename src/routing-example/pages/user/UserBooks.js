@@ -1,16 +1,17 @@
 import React from "react";
 import "antd/dist/antd.css";
-import {Table} from "antd";
+import {Input, Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
 import ReadListService from "../../service/user/lists/ReadListService";
 import FavoriteListService from "../../service/user/lists/FavoriteListService";
-import Search from "antd/es/input/Search";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
+import {debounce} from "lodash";
 
 class PersonList extends React.Component {
     state = {
+        search: "",
         data: [],
         read: [],
         favorite: [],
@@ -24,12 +25,21 @@ class PersonList extends React.Component {
 
     componentDidMount() {
         const {pagination} = this.state;
-        this.fetch({pagination});
+        this.fetch({pagination: pagination});
     }
 
     handleTableChange = (pagination) => {
         this.fetch({pagination});
     };
+
+    onChange = async (e) => {
+        this.setState({search: e.target.value})
+        const {pagination, search} = this.state
+
+        this.fetch({pagination: pagination, search: search})
+    }
+
+    debouncedSearch = debounce((e) => {this.onChange(e)}, 500)
 
     fetch = async (params = {}) => {
         this.setState({loading: true});
@@ -128,6 +138,13 @@ class PersonList extends React.Component {
                     <h2>List of Books</h2>
                 </div>
 
+                <Input
+                    placeholder="Book Name"
+                    onChange={this.debouncedSearch}
+                    size={"large"}
+                />
+
+                <br/> <br/>
 
                 <Table
                     columns={columns}
