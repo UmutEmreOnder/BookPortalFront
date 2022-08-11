@@ -74,7 +74,7 @@ class PersonList extends React.Component {
             {
                 title: "Author",
                 dataIndex: "author",
-                render: (author) => `${author?.name}`
+                render: (author) => `${author?.name} ${author?.surname}`
             },
             {
                 title: 'Read List',

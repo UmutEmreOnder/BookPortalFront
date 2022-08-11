@@ -13,8 +13,18 @@ const AuthorService = (function () {
         return response.data;
     }
 
+    const _register = async (credentials) => {
+        return await axios.post('http://localhost:8080/api/admin/author/', credentials, {
+            withCredentials: true,
+            headers: {
+                "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+            }
+        })
+    }
+
     return {
-        updateAuthor: _updateAuthor
+        updateAuthor: _updateAuthor,
+        register: _register
     }
 })();
 

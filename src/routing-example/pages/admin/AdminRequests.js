@@ -22,7 +22,7 @@ function AdminBookList() {
         {
             title: "Name",
             dataIndex: "bookName",
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: (a, b) => a.bookName.localeCompare(b.bookName),
             width: "20%"
         },
         {
@@ -44,6 +44,11 @@ function AdminBookList() {
                 {text: "History", value: "HISTORY"},
             ],
             onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
+        },
+        {
+            title: "Author",
+            dataIndex: "author",
+            render: (author) => `${author?.name} ${author?.surname}`
         },
         {
             title: "Action",

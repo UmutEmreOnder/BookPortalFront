@@ -19,6 +19,7 @@ import UserRead from "./pages/user/UserRead";
 import UserFavorite from "./pages/user/UserFavorite";
 import UpdateAuthor from "./pages/author/UpdateAuthor";
 import UpdateBook from "./pages/admin/UpdateBook";
+import CreateAuthor from "./pages/admin/CreateAuthor";
 
 const {Header, Content, Footer} = Layout;
 
@@ -49,6 +50,7 @@ export default function App() {
                             <Route path='/author-response' element={<AuthorResponse/>}/>
                             <Route path='/add-request' element={<AuthorCreateRequest/>}/>
                             <Route path='/author-update' element={<UpdateAuthor/>}/>
+                            <Route path='/author-create' element={<CreateAuthor/>}/>
 
                             <Route path='/admin-books' element={<AdminBooks/>}/>
                             <Route path='/admin-users' element={<AdminUsers/>}/>
