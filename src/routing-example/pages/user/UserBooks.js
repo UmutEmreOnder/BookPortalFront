@@ -1,7 +1,7 @@
 import React from "react";
 import "antd/dist/antd.css";
 import {Table} from "antd";
-import UserBookService from "../../service/bookService/UserBookService";
+import UserBookService from "../../service/user/UserBookService";
 import ReadListService from "../../service/lists/ReadListService";
 import FavoriteListService from "../../service/lists/FavoriteListService";
 import Search from "antd/es/input/Search";

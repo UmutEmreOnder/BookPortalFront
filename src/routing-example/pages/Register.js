@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import UserService from "../service/UserService";
+import UserService from "../service/user/UserService";
 import {Button, Form, Input} from "antd";
 
 const Register = () => {

@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import AuthService from "../service/AuthService";
 import LocalStorageUtil from "../util/LocalStorageUtil";
-import UserService from "../service/UserService";
+import UserService from "../service/user/UserService";
 import React from "react";
 
 const Home = () => {
@@ -63,7 +63,14 @@ const Home = () => {
                 </>
             )
         } else {
-            return (state?.value?.roles[0]?.id === 1 ? welcomeAdmin({state, setState, navigate}) : welcomeUser({state, setState, navigate}))
+            const id = state?.value?.roles[0]?.id;
+            if(id === 1) {
+                return welcomeAdmin({state, setState, navigate})
+            } else if (id === 2) {
+                return welcomeUser({state, setState, navigate})
+            } else {
+                return welcomeAuthor({state, setState, navigate})
+            }
         }
     }
 
@@ -76,13 +83,27 @@ function welcomeUser({state, setState, navigate}) {
             <div style={{textAlign: "center", marginTop: "70px"}}>
                 <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
                 <br/>
-                <Button style={{marginRight: "25px"}} onClick={() => {
-                    if(state.value.roles[0].id === 2) {
-                        navigate('/user-user')
-                    } else {
-                        navigate('/author-user')
-                    }
-                }}>Search Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigate('/user-books')}>Search Books</Button>
+                <Button onClick={() => navigate('/update-profile')}>Update Profile</Button>
+            </div>
+            <br/> <br/> <br/> <br/>
+            <Button onClick={() => {
+                LocalStorageUtil.clearToken();
+                navigate('/')
+                setState({})
+            }}>Log Out</Button>
+        </div>
+    )
+}
+
+function welcomeAuthor({state, setState, navigate}) {
+    return (
+        <div style={{textAlign: "center"}}>
+            <div style={{textAlign: "center", marginTop: "70px"}}>
+                <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
+                <br/>
+                <Button style={{marginRight: "25px"}} onClick={() => navigate('/author-books')}>Your Books</Button>
+                <Button style={{marginRight: "25px"}} onClick={() => navigate('/author-request')}>Your Requests</Button>
                 <Button onClick={() => navigate('/update-profile')}>Update Profile</Button>
             </div>
             <br/> <br/> <br/> <br/>

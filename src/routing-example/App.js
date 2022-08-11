@@ -12,6 +12,9 @@ import AdminBooks from "./pages/admin/AdminBooks";
 import AdminUsers from "./pages/admin/AdminUsers"
 import AdminAuthors from "./pages/admin/AdminAuthors";
 import AdminRequest from "./pages/admin/AdminRequests";
+import AuthorCreateRequest from "./pages/author/AuthorCreateRequest";
+import AuthorRequest from "./pages/author/AuthorRequest";
+import AuthorResponse from "./pages/author/AuthorResponse";
 
 const {Header, Content, Footer} = Layout;
 
@@ -28,16 +31,16 @@ export default function App() {
                     </Menu>
                 </Header>
                 <Content className="site-layout" style={{padding: "0 50px", marginTop: 64}}>
-                    <Breadcrumb style={{margin: "16px 0"}}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                        <Breadcrumb.Item>Users</Breadcrumb.Item>
-                        <Breadcrumb.Item>About</Breadcrumb.Item>
-                    </Breadcrumb>
+                    <Breadcrumb style={{margin: "16px 0"}}></Breadcrumb>
+
                     <div className="site-layout-background" style={{padding: 24, minHeight: 380}}>
                         <Routes>
                             <Route path='/update-profile' element={<Update/>}/>
                             <Route path='/user-books' element={<UserBooks/>}/>
                             <Route path='/author-books' element={<AuthorBooks/>}/>
+                            <Route path='/author-request' element={<AuthorRequest/>}/>
+                            <Route path='/author-response' element={<AuthorResponse/>}/>
+                            <Route path='/add-request' element={<AuthorCreateRequest/>}/>
                             <Route path='/admin-books' element={<AdminBooks/>}/>
                             <Route path='/admin-users' element={<AdminUsers/>}/>
                             <Route path='/admin-authors' element={<AdminAuthors/>}/>

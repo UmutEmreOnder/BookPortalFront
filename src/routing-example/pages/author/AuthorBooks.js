@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Table} from "antd";
-import AuthorBookService from "../../service/bookService/AuthorBookService";
+import AuthorBookService from "../../service/author/AuthorBookService";
 import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
 
@@ -113,7 +113,7 @@ function AuthorBookList() {
 
             <br/> <br/> <br/>
 
-            <Button onClick={() => navigate('/add-book')}>Add a Request</Button>
+            <Button onClick={() => navigate('/add-request')}>Add a Request</Button>
         </>
     )
 }
