@@ -62,8 +62,7 @@ function AdminUserList() {
         fetch({pagination});
     }, [])
 
-    function handleTableChange() {
-        const {pagination} = state;
+    function handleTableChange(pagination) {
         fetch({pagination});
     }
 

@@ -51,15 +51,14 @@ function AuthorRequest() {
 
     useEffect(() => {
         const {pagination} = state;
-        fetchRequest({pagination});
+        fetch({pagination});
     }, [])
 
-    function handleRequestTableChange() {
-        const {pagination} = state;
-        fetchRequest({pagination});
+    function handleTableChange(pagination) {
+        fetch({pagination});
     }
 
-    async function fetchRequest(params) {
+    async function fetch(params) {
         setState(prevState => {
             return {
                 data: prevState.data,
@@ -98,7 +97,7 @@ function AuthorRequest() {
                 dataSource={data}
                 pagination={pagination}
                 loading={loading}
-                onChange={handleRequestTableChange}
+                onChange={handleTableChange}
             />
 
             <br/> <br/>
