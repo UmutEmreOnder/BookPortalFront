@@ -2,7 +2,7 @@ import {Form, Input, Button} from "antd";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import AuthService from "../service/AuthService";
-import LocalStorageUtil from "../util/LocalStorageUtil";
+import LocalStorageUtil from "../util/SessionStorageUtil";
 import UserService from "../service/user/UserService";
 import React from "react";
 

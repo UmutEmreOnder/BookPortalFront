@@ -1,5 +1,5 @@
 import axios from "axios";
-import LocalStorageUtil from "../../util/LocalStorageUtil";
+import LocalStorageUtil from "../../util/SessionStorageUtil";
 
 const AdminRequestService = (function () {
     const _getRequests = async () => {

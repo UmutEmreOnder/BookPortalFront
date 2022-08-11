@@ -1,16 +1,16 @@
-const LocalStorageService = (function () {
+const SessionStorageService = (function () {
     const TOKEN = "token";
 
     function _setToken(token) {
-        localStorage.setItem(TOKEN, token);
+        sessionStorage.setItem(TOKEN, token);
     }
 
     function _getToken() {
-        return localStorage.getItem(TOKEN);
+        return sessionStorage.getItem(TOKEN);
     }
 
     function _clearToken() {
-        localStorage.removeItem(TOKEN);
+        sessionStorage.removeItem(TOKEN);
     }
 
     return {
@@ -20,4 +20,4 @@ const LocalStorageService = (function () {
     };
 })();
 
-export default LocalStorageService;
+export default SessionStorageService;

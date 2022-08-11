@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageUtil from "../../util/LocalStorageUtil";
+import localStorageUtil from "../../util/SessionStorageUtil";
 
 const AuthorBookService = (function () {
     const _fetchBooks = async (params) => {

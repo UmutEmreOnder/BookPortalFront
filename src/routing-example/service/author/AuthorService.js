@@ -1,5 +1,5 @@
 import axios from "axios";
-import LocalStorageUtil from "../../util/LocalStorageUtil";
+import LocalStorageUtil from "../../util/SessionStorageUtil";
 
 const AuthorService = (function () {
     const _updateAuthor = async (credentials) => {
