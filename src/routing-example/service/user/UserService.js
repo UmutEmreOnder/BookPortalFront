@@ -27,10 +27,22 @@ const UserService = (function () {
         return await axios.post('http://localhost:8080/api/user/', credentials)
     }
 
+    const _updateUser = async (credentials) => {
+        const response = await axios.put(`http://localhost:8080/api/user/?id=${credentials.id}`, credentials, {
+            withCredentials: true,
+            headers: {
+                "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
 
     return {
         getUser: _getUser(),
         register: _register,
+        updateUser: _updateUser,
     };
 })();
 

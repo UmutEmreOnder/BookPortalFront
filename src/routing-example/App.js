@@ -6,7 +6,7 @@ import {Layout, Menu, Breadcrumb} from "antd";
 import Home from "./pages/Home";
 import UserBooks from "./pages/user/UserBooks";
 import AuthorBooks from "./pages/author/AuthorBooks";
-import Update from "./pages/Update";
+import UpdateUser from "./pages/user/UpdateUser";
 import Register from "./pages/Register"
 import AdminBooks from "./pages/admin/AdminBooks";
 import AdminUsers from "./pages/admin/AdminUsers"
@@ -15,6 +15,10 @@ import AdminRequest from "./pages/admin/AdminRequests";
 import AuthorCreateRequest from "./pages/author/AuthorCreateRequest";
 import AuthorRequest from "./pages/author/AuthorRequest";
 import AuthorResponse from "./pages/author/AuthorResponse";
+import UserRead from "./pages/user/UserRead";
+import UserFavorite from "./pages/user/UserFavorite";
+import UpdateAuthor from "./pages/author/UpdateAuthor";
+import UpdateBook from "./pages/admin/UpdateBook";
 
 const {Header, Content, Footer} = Layout;
 
@@ -35,16 +39,24 @@ export default function App() {
 
                     <div className="site-layout-background" style={{padding: 24, minHeight: 380}}>
                         <Routes>
-                            <Route path='/update-profile' element={<Update/>}/>
+                            <Route path='/user-update' element={<UpdateUser/>}/>
                             <Route path='/user-books' element={<UserBooks/>}/>
+                            <Route path='/user-read' element={<UserRead/>}/>
+                            <Route path='/user-favorite' element={<UserFavorite/>}/>
+
                             <Route path='/author-books' element={<AuthorBooks/>}/>
                             <Route path='/author-request' element={<AuthorRequest/>}/>
                             <Route path='/author-response' element={<AuthorResponse/>}/>
                             <Route path='/add-request' element={<AuthorCreateRequest/>}/>
+                            <Route path='/author-update' element={<UpdateAuthor/>}/>
+
                             <Route path='/admin-books' element={<AdminBooks/>}/>
                             <Route path='/admin-users' element={<AdminUsers/>}/>
                             <Route path='/admin-authors' element={<AdminAuthors/>}/>
                             <Route path='/admin-requests' element={<AdminRequest/>}/>
+
+                            <Route path='/book-update' element={<UpdateBook/>}/>
+
                             <Route path='/about' element={<About/>}/>
                             <Route path='/register' element={<Register/>}/>
                             <Route path='/' element={<Home/>}/>
