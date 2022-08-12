@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import "antd/dist/antd.css";
 import "../styles.css";
@@ -26,6 +26,10 @@ import AdminUpdateAuthor from "./pages/admin/AdminUpdateAuthor";
 const {Header, Content, Footer} = Layout;
 
 export default function App() {
+    useEffect(() => {
+        document.title = "Book Portal"
+    }, [])
+
     return (
         <Router>
             <Layout style={{height: "100vh"}}>
