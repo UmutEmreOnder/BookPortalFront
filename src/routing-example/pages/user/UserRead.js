@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {useNavigate} from "react-router-dom";
-import {Button, Table} from "antd";
-import AuthorRequestService from "../../service/author/AuthorRequestService";
+import {Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
 
 function UserRead() {
-    const navigate = useNavigate();
-
     const [state, setState] = useState({
         data: [],
         pagination: {

@@ -1,6 +1,5 @@
 import axios from "axios";
-import LocalStorageUtil from "../../util/SessionStorageUtil";
-import localStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 import UrlUtil from "../../util/UrlUtil";
 
 const AdminAuthorService = (function () {
@@ -14,7 +13,7 @@ const AdminAuthorService = (function () {
                 ...params
             },
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         });
 
@@ -24,7 +23,7 @@ const AdminAuthorService = (function () {
     const _delete = async (record) => {
         const response = await axios.delete(`${UrlUtil.adminURL()}/author?id=${record.id}`, {
             headers: {
-                "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         });
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import LocalStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 import UrlUtil from "../../util/UrlUtil";
 
 const AuthorService = (function () {
@@ -7,7 +7,7 @@ const AuthorService = (function () {
         try {
             const response = await axios.put(`${UrlUtil.authorURL()}/?id=${credentials.id}`, credentials, {
                 headers: {
-                    "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             })
 
@@ -21,7 +21,7 @@ const AuthorService = (function () {
         try {
             const response = await axios.post(`${UrlUtil.adminURL()}/author`, credentials, {
                 headers: {
-                    "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             })
 

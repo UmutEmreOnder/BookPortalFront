@@ -2,10 +2,10 @@ import {Form, Input, Button} from "antd";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import AuthService from "../service/AuthService";
-import LocalStorageUtil from "../util/SessionStorageUtil";
+import SessionStorageUtil from "../util/SessionStorageUtil";
 import UserService from "../service/user/UserService";
 import React from "react";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ToastifyUtil from "../util/ToastifyUtil";
 import MessageUtil from "../util/MessageUtil";
@@ -44,7 +44,7 @@ const Home = () => {
     };
 
     const result = ({onFinish, onFinishFailed, handleChange, credentials}) => {
-        if(!LocalStorageUtil.getToken()) {
+        if(!SessionStorageUtil.getToken()) {
             return (
                 <>
                     <div style={{textAlign: "right", marginRight: "200px"}}>
@@ -108,7 +108,7 @@ function welcomeUser({state, setState, navigation}) {
 
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
-                LocalStorageUtil.clearToken();
+                SessionStorageUtil.clearToken();
                 navigation('/')
                 setState({})
             }}>Log Out</Button>
@@ -129,7 +129,7 @@ function welcomeAuthor({state, setState, navigation}) {
             </div>
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
-                LocalStorageUtil.clearToken();
+                SessionStorageUtil.clearToken();
                 navigation('/')
                 setState({})
             }}>Log Out</Button>
@@ -149,11 +149,11 @@ function welcomeAdmin({state, setState, navigation}) {
                 <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-requests')}}>List Requests</Button>
             </div>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <Button style={{marginRight: "25px"}} onClick={() => {navigation('/author-create')}}>Create Author</Button>
+                <Button style={{marginRight: "60px"}} onClick={() => {navigation('/author-create')}}>Create Author</Button>
             </div>
             <br/> <br/> <br/> <br/>
-            <Button style={{marginRight: "25px"}} onClick={() => {
-                LocalStorageUtil.clearToken();
+            <Button style={{marginRight: "60px"}} onClick={() => {
+                SessionStorageUtil.clearToken();
                 navigation('/');
                 setState({})
             }}>Log Out</Button>

@@ -3,7 +3,6 @@ import "antd/dist/antd.css";
 import {Button, Input, Table} from "antd";
 import AuthorBookService from "../../service/author/AuthorBookService";
 import {useNavigate} from "react-router-dom";
-import Search from "antd/es/input/Search";
 import {debounce} from "lodash";
 
 const columns = [

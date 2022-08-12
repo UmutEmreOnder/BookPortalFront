@@ -1,20 +1,20 @@
 import axios from "axios";
-import LocalStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 import UrlUtil from "../../util/UrlUtil";
 
 const UserService = (function () {
     const _getUser = async () => {
         let valid = null;
 
-        if(LocalStorageUtil.getToken()) {
+        if(SessionStorageUtil.getToken()) {
             try {
                 valid = await axios.get(`${UrlUtil.userURL()}/`, {
                     headers: {
-                        "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                        "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                     }
                 });
             } catch (error) {
-                LocalStorageUtil.clearToken();
+                SessionStorageUtil.clearToken();
             }
             return valid.data;
         } else {
@@ -38,7 +38,7 @@ const UserService = (function () {
         try {
             const response = await axios.put(`${UrlUtil.userURL()}/?id=${credentials.id}`, credentials, {
                 headers: {
-                    "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             })
             return response.data

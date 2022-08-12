@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageUtil from "../../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../../util/SessionStorageUtil";
 import UrlUtil from "../../../util/UrlUtil";
 
 const ReadListService = (function () {
@@ -7,14 +7,14 @@ const ReadListService = (function () {
         if(await _checkContains(records)) {
             await axios.delete(`${UrlUtil.userURL()}/book/favorite?name=${records.name}`, {
                 headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
             return "DELETE"
         } else {
             await axios.post(`${UrlUtil.userURL()}/book/favorite?name=${records.name}`, {}, {
                 headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
             return "ADD"
@@ -24,7 +24,7 @@ const ReadListService = (function () {
     const _getFavoriteList = async () => {
         const response = await axios.get(`${UrlUtil.userURL()}/book/favorite`, {
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         })
 
@@ -34,7 +34,7 @@ const ReadListService = (function () {
     const _checkContains = async (records) => {
         let list = await axios.get(`${UrlUtil.userURL()}/book/favorite`, {
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         })
 

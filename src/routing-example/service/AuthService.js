@@ -1,21 +1,21 @@
 import axios from "axios";
-import LocalStorageUtil from "../util/SessionStorageUtil";
+import SessionStorageUtil from "../util/SessionStorageUtil";
 import UrlUtil from "../util/UrlUtil";
 
 const AuthService = (function () {
     const _signin = async (credentials) => {
         let valid = null;
 
-        LocalStorageUtil.setToken(btoa(`${credentials.username}:${credentials.password}`));
+        SessionStorageUtil.setToken(btoa(`${credentials.username}:${credentials.password}`));
 
         try {
             valid = await axios.get(`${UrlUtil.userURL()}/`, {
                 headers: {
-                    "Authorization": `Basic ${LocalStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
         } catch (error) {
-            LocalStorageUtil.clearToken();
+            SessionStorageUtil.clearToken();
             return null;
         }
 

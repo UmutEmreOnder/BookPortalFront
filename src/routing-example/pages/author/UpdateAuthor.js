@@ -1,9 +1,6 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {Button, Form, Input} from "antd";
-import UserService from "../../service/user/UserService";
-import LocalStorageUtil from "../../util/SessionStorageUtil";
-import Password from "antd/es/input/Password";
 import AuthorService from "../../service/author/AuthorService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";

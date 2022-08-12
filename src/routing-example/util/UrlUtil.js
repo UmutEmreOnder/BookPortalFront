@@ -15,16 +15,11 @@ const UrlUtil = function () {
         return `${_baseUrl()}/api/author`
     }
 
-    const _adminBtoa = () => {
-        return btoa("sys.admin:admin");
-    }
-
     return {
         baseURL: _baseUrl,
         adminURL: _adminUrl,
         authorURL: _authorUrl,
         userURL: _userUrl,
-        adminBtao: _adminBtoa
     }
 }();
 

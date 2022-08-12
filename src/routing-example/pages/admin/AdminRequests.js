@@ -5,7 +5,6 @@ import AdminRequestService from "../../service/admin/AdminRequestService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
-import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminBookList() {
     const text = 'Are you sure to deny this?';

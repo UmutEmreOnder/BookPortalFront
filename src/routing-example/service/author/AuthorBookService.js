@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 import UrlUtil from "../../util/UrlUtil";
 
 const AuthorBookService = (function () {
@@ -13,7 +13,7 @@ const AuthorBookService = (function () {
                 ...params
             },
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         });
 

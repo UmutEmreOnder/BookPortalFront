@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageUtil from "../../../util/SessionStorageUtil";
+import SessionStorageUtil from "../../../util/SessionStorageUtil";
 import UrlUtil from "../../../util/UrlUtil";
 
 const ReadListService = (function () {
@@ -8,7 +8,7 @@ const ReadListService = (function () {
             await axios.delete(`${UrlUtil.userURL()}/book/read?name=${records.name}`, {
                 withCredentials: true,
                 headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
 
@@ -17,7 +17,7 @@ const ReadListService = (function () {
             await axios.post(`${UrlUtil.userURL()}/book/read?name=${records.name}`, {}, {
                 withCredentials: true,
                 headers: {
-                    "Authorization": `Basic ${localStorageUtil.getToken()}`
+                    "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
             return "ADD";
@@ -28,7 +28,7 @@ const ReadListService = (function () {
         const response = await axios.get(`${UrlUtil.userURL()}/book/read`, {
             withCredentials: true,
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         })
 
@@ -39,7 +39,7 @@ const ReadListService = (function () {
         let list = await axios.get(`${UrlUtil.userURL()}/book/read`, {
             withCredentials: true,
             headers: {
-                "Authorization": `Basic ${localStorageUtil.getToken()}`
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         })
 
