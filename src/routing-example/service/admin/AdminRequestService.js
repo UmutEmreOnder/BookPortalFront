@@ -1,9 +1,10 @@
 import axios from "axios";
 import LocalStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const AdminRequestService = (function () {
     const _getRequests = async () => {
-        const response = await axios.get(`http://localhost:8080/api/admin/request`, {
+        const response = await axios.get(`${UrlUtil.adminURL()}/request`, {
             withCredentials: true,
             headers: {
                 "Authorization": `Basic ${LocalStorageUtil.getToken()}`
@@ -14,7 +15,7 @@ const AdminRequestService = (function () {
     }
 
     const _acceptRequest = async(record) => {
-        const response = await axios.post(`http://localhost:8080/api/admin/request/accept?id=${record.id}`, {}, {
+        const response = await axios.post(`${UrlUtil.adminURL()}/request/accept?id=${record.id}`, {}, {
             withCredentials: true,
             headers: {
                 "Authorization": `Basic ${LocalStorageUtil.getToken()}`
@@ -25,8 +26,7 @@ const AdminRequestService = (function () {
     }
 
     const _denyRequest = async(record) => {
-        const response = await axios.post(`http://localhost:8080/api/admin/request/deny?id=${record.id}`, {}, {
-            withCredentials: true,
+        const response = await axios.post(`${UrlUtil.adminURL()}/request/deny?id=${record.id}`, {}, {
             headers: {
                 "Authorization": `Basic ${LocalStorageUtil.getToken()}`
             }

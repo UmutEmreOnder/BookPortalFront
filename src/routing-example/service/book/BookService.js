@@ -1,10 +1,10 @@
 import axios from "axios";
 import LocalStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const BookService = (function () {
     const _updateBook = async (credentials) => {
-        const response = await axios.put(`http://localhost:8080/api/admin/book/?id=${credentials.id}`, credentials, {
-            withCredentials: true,
+        const response = await axios.put(`${UrlUtil.adminURL()}/book/?id=${credentials.id}`, credentials, {
             headers: {
                 "Authorization": `Basic ${LocalStorageUtil.getToken()}`
             }

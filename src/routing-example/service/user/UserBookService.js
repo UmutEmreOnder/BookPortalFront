@@ -1,12 +1,12 @@
 import axios from "axios";
 import localStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const UserBookService = (function () {
     const _fetchBooks = async (params) => {
-        const url = params.search ? `http://localhost:8080/api/user/book/like/${params.search}` : `http://localhost:8080/api/user/book/`;
+        const url = params.search ? `${UrlUtil.userURL()}/book/like/${params.search}` : `${UrlUtil.userURL()}/book/`;
 
         const response = await axios.get(url, {
-            withCredentials: true,
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,
@@ -21,8 +21,7 @@ const UserBookService = (function () {
     };
 
     const _fetchReadBooks = async (params) => {
-        const response = await axios.get("http://localhost:8080/api/user/book/read", {
-            withCredentials: true,
+        const response = await axios.get(`${UrlUtil.userURL()}/book/read`, {
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,
@@ -37,8 +36,7 @@ const UserBookService = (function () {
     }
 
     const _fetchFavoriteBooks = async (params) => {
-        const response = await axios.get("http://localhost:8080/api/user/book/favorite", {
-            withCredentials: true,
+        const response = await axios.get(`${UrlUtil.userURL()}/book/favorite`, {
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,

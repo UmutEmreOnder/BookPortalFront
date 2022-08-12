@@ -1,10 +1,10 @@
 import axios from "axios";
 import localStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const AdminBookService = (function () {
     const _fetchBooks = async (params) => {
-        const response = await axios.get("http://localhost:8080/api/admin/book", {
-            withCredentials: true,
+        const response = await axios.get(`${UrlUtil.adminURL()}/book`, {
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,
@@ -19,8 +19,7 @@ const AdminBookService = (function () {
     };
 
     const _delete = async (record) => {
-        const response = await axios.delete(`http://localhost:8080/api/admin/book?id=${record.id}`, {
-            withCredentials: true,
+        const response = await axios.delete(`${UrlUtil.adminURL()}/book?id=${record.id}`, {
             headers: {
                 "Authorization": `Basic ${localStorageUtil.getToken()}`
             }

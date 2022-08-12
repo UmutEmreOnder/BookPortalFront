@@ -1,11 +1,11 @@
 import axios from "axios";
 import LocalStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const AuthorService = (function () {
     const _updateAuthor = async (credentials) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/author/?id=${credentials.id}`, credentials, {
-                withCredentials: true,
+            const response = await axios.put(`${UrlUtil.authorURL()}/?id=${credentials.id}`, credentials, {
                 headers: {
                     "Authorization": `Basic ${LocalStorageUtil.getToken()}`
                 }
@@ -19,8 +19,7 @@ const AuthorService = (function () {
 
     const _register = async (credentials) => {
         try {
-            const response = await axios.post('http://localhost:8080/api/admin/author/', credentials, {
-                withCredentials: true,
+            const response = await axios.post(`${UrlUtil.adminURL()}/author`, credentials, {
                 headers: {
                     "Authorization": `Basic ${LocalStorageUtil.getToken()}`
                 }

@@ -1,12 +1,12 @@
 import axios from "axios";
 import localStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const AdminUserService = (function () {
     const _getUsers = async (params) => {
-        const url = params.search ? `http://localhost:8080/api/admin/user/like/${params.search}` : `http://localhost:8080/api/admin/user/`;
+        const url = params.search ? `${UrlUtil.adminURL()}/user/like/${params.search}` : `${UrlUtil.adminURL()}/user/`;
 
         const response = await axios.get(url, {
-            withCredentials: true,
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,
@@ -21,8 +21,7 @@ const AdminUserService = (function () {
     };
 
     const _delete = async (record) => {
-        const response = await axios.delete(`http://localhost:8080/api/admin/user?id=${record.id}`, {
-            withCredentials: true,
+        const response = await axios.delete(`${UrlUtil.adminURL()}/user?id=${record.id}`, {
             headers: {
                 "Authorization": `Basic ${localStorageUtil.getToken()}`
             }

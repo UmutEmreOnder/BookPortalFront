@@ -1,5 +1,6 @@
 import axios from "axios";
 import LocalStorageUtil from "../../util/SessionStorageUtil";
+import UrlUtil from "../../util/UrlUtil";
 
 const UserService = (function () {
     const _getUser = async () => {
@@ -7,8 +8,7 @@ const UserService = (function () {
 
         if(LocalStorageUtil.getToken()) {
             try {
-                valid = await axios.get(`http://localhost:8080/api/user/`, {
-                    withCredentials: true,
+                valid = await axios.get(`${UrlUtil.userURL()}/`, {
                     headers: {
                         "Authorization": `Basic ${LocalStorageUtil.getToken()}`
                     }
@@ -26,7 +26,7 @@ const UserService = (function () {
     const _register = async (credentials) => {
         let response = null;
         try {
-            response = await axios.post('http://localhost:8080/api/user/', credentials)
+            response = await axios.post(`${UrlUtil.userURL()}/`, credentials)
         } catch (error) {
             return null;
         }
@@ -36,8 +36,7 @@ const UserService = (function () {
 
     const _updateUser = async (credentials) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/user/?id=${credentials.id}`, credentials, {
-                withCredentials: true,
+            const response = await axios.put(`${UrlUtil.userURL()}/?id=${credentials.id}`, credentials, {
                 headers: {
                     "Authorization": `Basic ${LocalStorageUtil.getToken()}`
                 }
