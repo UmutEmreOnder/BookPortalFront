@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Input, Table} from "antd";
+import {Button, Input, Popconfirm, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import AdminBookService from "../../service/admin/AdminBookService";
 import ToastifyUtil from "../../util/ToastifyUtil";
@@ -8,9 +8,11 @@ import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
 import UserBookService from "../../service/user/UserBookService";
 import {debounce} from "lodash";
+import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminBookList() {
     const navigate = useNavigate();
+    const text = 'Are you sure to delete this?';
 
     const [state, setState] = useState({
         data: [],
@@ -65,12 +67,10 @@ function AdminBookList() {
         },
         {
             title: "Delete",
-            render: (text, record) => (
-                <Button onClick={async () => {
-                    await AdminBookService.delete(record);
-                    ToastifyUtil.success(MessageUtil.deleteBookSuccess())
-                    handleTableChange(state.pagination)
-                }}>Delete</Button>
+            render: (record) => (
+                <Popconfirm placement="top" title={text} onConfirm={() => confirm(record)} okText="Yes" cancelText="No">
+                    <Button>Delete</Button>
+                </Popconfirm>
             ),
         },
         {
@@ -80,6 +80,16 @@ function AdminBookList() {
             ),
         }
     ]
+
+    const confirm = (record) => {
+        deleteEntity(record)
+    }
+
+    const deleteEntity = async (record) => {
+        await AdminBookService.delete(record);
+        ToastifyUtil.success(MessageUtil.deleteBookSuccess())
+        handleTableChange(state.pagination)
+    }
 
     useEffect(() => {
         const {pagination} = state;

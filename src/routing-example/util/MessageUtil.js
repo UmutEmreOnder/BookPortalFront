@@ -71,6 +71,11 @@ const MessageUtil = function () {
         return _registerFail();
     }
 
+    const _deleteAuthorSuccess = () => {
+        return "The Author Deleted Successfully!"
+    }
+
+
     return {
         loginSuccess: _loginSuccess,
         loginFailed: _loginFailed,
@@ -89,7 +94,8 @@ const MessageUtil = function () {
         acceptRequest: _acceptRequest,
         denyRequest: _denyRequest,
         createAuthorSuccess: _createAuthorSuccess,
-        createAuthorFailed: _createAuthorFailed
+        createAuthorFailed: _createAuthorFailed,
+        deleteAuthorSuccess: _deleteAuthorSuccess,
     }
 }();
 

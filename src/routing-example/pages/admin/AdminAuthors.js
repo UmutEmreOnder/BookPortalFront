@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Input, Table} from "antd";
+import {Button, Input, Popconfirm, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import Search from "antd/es/input/Search";
 import AdminAuthorService from "../../service/admin/AdminAuthorService";
@@ -8,9 +8,11 @@ import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {debounce} from "lodash";
+import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminUserList() {
     const navigate = useNavigate();
+    const text = 'Are you sure to delete this?';
 
     const [state, setState] = useState({
         data: [],
@@ -48,12 +50,10 @@ function AdminUserList() {
         },
         {
             title: "Delete",
-            render: (text, record) => (
-                <Button onClick={async () => {
-                    await AdminAuthorService.delete(record);
-                    ToastifyUtil.success(MessageUtil.deleteUserSuccess())
-                    handleTableChange(state.pagination)
-                }}>Delete</Button>
+            render: (record) => (
+                <Popconfirm placement="top" title={text} onConfirm={() => confirm(record)} okText="Yes" cancelText="No">
+                    <Button>Delete</Button>
+                </Popconfirm>
             ),
         },
         {
@@ -63,6 +63,16 @@ function AdminUserList() {
             ),
         }
     ]
+
+    const confirm = (record) => {
+        deleteEntity(record)
+    }
+
+    const deleteEntity = async (record) => {
+        await AdminAuthorService.delete(record);
+        ToastifyUtil.success(MessageUtil.deleteAuthorSuccess())
+        handleTableChange(state.pagination)
+    }
 
     useEffect(() => {
         const {pagination} = state;

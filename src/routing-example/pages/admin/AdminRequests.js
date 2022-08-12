@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Table} from "antd";
+import {Button, Popconfirm, Table} from "antd";
 import AdminRequestService from "../../service/admin/AdminRequestService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
+import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminBookList() {
+    const text = 'Are you sure to deny this?';
+
     const [state, setState] = useState({
         data: [],
         pagination: {
@@ -55,7 +58,7 @@ function AdminBookList() {
         },
         {
             title: "Action",
-            render: (text, record) => {
+            render: (record) => {
                 return (
                     <>
                         <Button onClick={async() => {
@@ -64,16 +67,24 @@ function AdminBookList() {
                             handleTableChange(state.pagination)
                         }} style={{marginRight: "20px"}}>Accept</Button>
 
-                        <Button onClick={async () => {
-                            await AdminRequestService.deny(record);
-                            ToastifyUtil.success(MessageUtil.denyRequest())
-                            handleTableChange(state.pagination)
-                        }}>Deny</Button>
+                        <Popconfirm placement="top" title={text} onConfirm={() => confirm(record)} okText="Yes" cancelText="No">
+                            <Button>Deny</Button>
+                        </Popconfirm>
                     </>
                 )
             }
         }
     ]
+
+    const confirm = (record) => {
+        deleteEntity(record)
+    }
+
+    const deleteEntity = async (record) => {
+        await AdminRequestService.deny(record);
+        ToastifyUtil.success(MessageUtil.denyRequest())
+        handleTableChange(state.pagination)
+    }
 
     useEffect(() => {
         const {pagination} = state;
