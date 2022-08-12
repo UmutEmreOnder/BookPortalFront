@@ -37,6 +37,10 @@ function AuthorResponse() {
             title: "Response",
             dataIndex: "respond",
             render: (respond) => `${respond.charAt(0).toUpperCase() + respond.toLowerCase().slice(1)}`,
+            filters: [
+                {text: "Accepted", value: "ACCEPTED"},
+                {text: "Denied", value: "DENIED"},
+            ],
             onFilter: (value, record) => record.respond.indexOf(value) === 0,
         }
     ]
