@@ -27,10 +27,9 @@ const Home = () => {
     };
 
     useEffect(() => {
-        if (SessionStorageUtil.getUser()) {
-            const value = SessionStorageUtil.getUser();
-            setUser({value})
-        }
+        UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
+        const value = SessionStorageUtil.getUser();
+        setUser({value})
     }, [])
 
     useEffect(() => {

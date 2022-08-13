@@ -6,8 +6,9 @@ import ReadListService from "../../service/user/lists/ReadListService";
 import FavoriteListService from "../../service/user/lists/FavoriteListService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
-import {ToastContainer} from "react-toastify";
 import {debounce} from "lodash";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import UserService from "../../service/user/UserService";
 
 class PersonList extends React.Component {
     state = {
@@ -39,14 +40,18 @@ class PersonList extends React.Component {
         this.fetch({pagination: pagination, search: search})
     }
 
+    setUpdatedUser = () => {
+        UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
+    }
+
     debouncedSearch = debounce((e) => {this.onChange(e)}, 500)
 
     fetch = async (params = {}) => {
         this.setState({loading: true});
 
-        const data = await UserBookService.fetchBooks(params);
-        const readList = await ReadListService.getReadList();
-        const favoriteList = await FavoriteListService.getFavoriteList();
+        const data = UserBookService.fetchBooks(params);
+        const readList = SessionStorageUtil.getUser().readList;
+        const favoriteList = SessionStorageUtil.getUser().favoriteList;
 
         this.setState({
             loading: false,
@@ -94,6 +99,7 @@ class PersonList extends React.Component {
                 render: (text, record) => (
                     <input type={"checkbox"} defaultChecked={this.checkReadList(record)} onClick={async () => {
                         const response = await ReadListService.addOrDrop(record);
+                        this.setUpdatedUser();
                         response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
                     }}/>
                 ),
@@ -103,6 +109,7 @@ class PersonList extends React.Component {
                 render: (text, record) => (
                     <input type={"checkbox"} defaultChecked={this.checkFavoriteList(record)} onClick={async () => {
                         const response = await FavoriteListService.addOrDrop(record)
+                        this.setUpdatedUser();
                         response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
                     }}/>
                 ),
