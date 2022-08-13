@@ -98,7 +98,7 @@ function welcomeUser({user, setUser, navigation}) {
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-books')}>Search Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-read')}>Your Read List</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-favorite')}>Your Favorite List</Button>
-                <Button onClick={() => navigation(`/user-update`, {user})}>Update Profile</Button>
+                <Button onClick={() => navigation(`/user-update`)}>Update Profile</Button>
             </div>
 
             <br/> <br/> <br/> <br/>
@@ -122,11 +122,13 @@ function welcomeAuthor({user, setUser, navigation}) {
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-books')}>Your Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-request')}>Your Requests</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/add-request')}>Add a Request</Button>
-                <Button onClick={() => navigation('/author-update', {user})}>Update Profile</Button>
+                <Button onClick={() => navigation('/author-update')}>Update Profile</Button>
             </div>
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
                 SessionStorageUtil.clearToken();
+                SessionStorageUtil.clearUser();
+                ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/')
                 setUser({})
             }}>Log Out</Button>
@@ -151,6 +153,8 @@ function welcomeAdmin({user, setUser, navigation}) {
             <br/> <br/> <br/> <br/>
             <Button style={{marginRight: "60px"}} onClick={() => {
                 SessionStorageUtil.clearToken();
+                SessionStorageUtil.clearUser();
+                ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/');
                 setUser({})
             }}>Log Out</Button>

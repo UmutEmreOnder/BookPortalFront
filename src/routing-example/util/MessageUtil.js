@@ -75,6 +75,10 @@ const MessageUtil = function () {
         return "The Author Deleted Successfully!"
     }
 
+    const _updateFailed = () => {
+        return "Make sure you have filled every field marked with '*' sign"
+    }
+
 
     return {
         loginSuccess: _loginSuccess,
@@ -96,6 +100,7 @@ const MessageUtil = function () {
         createAuthorSuccess: _createAuthorSuccess,
         createAuthorFailed: _createAuthorFailed,
         deleteAuthorSuccess: _deleteAuthorSuccess,
+        updateFailed: _updateFailed
     }
 }();
 

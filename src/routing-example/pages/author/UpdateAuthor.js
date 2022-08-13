@@ -4,21 +4,23 @@ import {Button, Form, Input} from "antd";
 import AuthorService from "../../service/author/AuthorService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
-import {ToastContainer} from "react-toastify";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
+import sessionStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageService from "../../util/SessionStorageUtil";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const {id, name, surname, age, email, username} = sessionStorageUtil.getUser();
 
     const [credentials, setCredentials] = useState({
-        id: location.state.value.id,
-        name: location.state.value.name,
-        surname: location.state.value.surname,
-        age: location.state.value.age,
-        email: location.state.value.email,
-        username: location.state.value.username,
+        id: id,
+        name: name,
+        surname: surname,
+        age: age,
+        email: email,
+        username: username,
     });
+
 
 
 
@@ -28,8 +30,13 @@ const UpdateAuthor = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
-            ToastifyUtil.info(MessageUtil.logOut())
-            SessionStorageUtil.clearToken()
+
+            if(credentials.username !== username) {
+                ToastifyUtil.info(MessageUtil.logOut())
+                SessionStorageService.clearToken()
+                SessionStorageService.clearUser()
+            }
+
             navigate('/')
         } else {
             ToastifyUtil.error(MessageUtil.updateProfileFailed())

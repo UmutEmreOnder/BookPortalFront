@@ -2,23 +2,23 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {Button, Form, Input} from "antd";
 import UserService from "../../service/user/UserService";
-import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
+import sessionStorageUtil from "../../util/SessionStorageUtil";
+import Password from "antd/es/input/Password";
 
 const UpdateUser = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-
+    const {id, name, surname, age, email, username} = sessionStorageUtil.getUser();
 
     const [credentials, setCredentials] = useState({
-        id: location.state.value.id,
-        name: location.state.value.name,
-        surname: location.state.value.surname,
-        age: location.state.value.age,
-        email: location.state.value.email,
-        username: location.state.value.username,
+        id: id,
+        name: name,
+        surname: surname,
+        age: age,
+        email: email,
+        username: username,
     });
 
 
@@ -27,8 +27,13 @@ const UpdateUser = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
-            ToastifyUtil.info(MessageUtil.logOut())
-            SessionStorageService.clearToken()
+
+            if(credentials.username !== username) {
+                ToastifyUtil.info(MessageUtil.logOut())
+                SessionStorageService.clearToken()
+                SessionStorageService.clearUser()
+            }
+
             navigate('/')
         } else {
             ToastifyUtil.error(MessageUtil.updateProfileFailed())
@@ -36,8 +41,8 @@ const UpdateUser = () => {
     };
 
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
+    const onFinishFailed = () => {
+        ToastifyUtil.info(MessageUtil.updateFailed())
     };
 
     const handleChange = (event) => {
@@ -84,6 +89,11 @@ const UpdateUser = () => {
                 <Form.Item label="Username" name="username"
                            rules={[{required: true, message: "Please input your username!"}]}>
                     <Input onChange={handleChange} name="username" value={credentials.username}/>
+                </Form.Item>
+
+                <Form.Item label="Password" name="password"
+                           rules={[{required: true, message: "Please input your password!"}]}>
+                    <Password onChange={handleChange} name="password" value={credentials.password}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
