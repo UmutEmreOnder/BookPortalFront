@@ -49,7 +49,7 @@ const UserService = (function () {
 
 
     return {
-        getUser: _getUser(),
+        getUser: _getUser,
         register: _register,
         updateUser: _updateUser,
     };

@@ -5,7 +5,6 @@ import AuthService from "../service/AuthService";
 import SessionStorageUtil from "../util/SessionStorageUtil";
 import UserService from "../service/user/UserService";
 import React from "react";
-import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ToastifyUtil from "../util/ToastifyUtil";
 import MessageUtil from "../util/MessageUtil";
@@ -13,12 +12,11 @@ import MessageUtil from "../util/MessageUtil";
 const Home = () => {
     const navigation = useNavigate();
     const [credentials, setCredentials] = useState({});
-    const [state, setState] = useState({});
+    const [user, setUser] = useState({});
 
     const onFinish = async () => {
-        const response = await AuthService.signin(credentials);
-
-        console.log(response)
+        let response;
+        await AuthService.signin(credentials).then(value => {setUser({value}); response = value});
 
         if (response) {
             navigation('/')
@@ -29,8 +27,17 @@ const Home = () => {
     };
 
     useEffect(() => {
-        UserService.getUser?.then(value => {setState({value})})
+        if (SessionStorageUtil.getUser()) {
+            const value = SessionStorageUtil.getUser();
+            setUser({value})
+        }
     }, [])
+
+    useEffect(() => {
+        if(user.value) {
+            SessionStorageUtil.setUser(user.value)
+        }
+    }, [user])
 
 
     const onFinishFailed = (errorInfo) => {
@@ -68,13 +75,13 @@ const Home = () => {
                 </>
             )
         } else {
-            const id = state?.value?.roles[0]?.id;
+            const id = user?.value?.roles[0]?.id;
             if(id === 1) {
-                return welcomeAdmin({state, setState, navigation})
+                return welcomeAdmin({user, setUser, navigation})
             } else if (id === 2) {
-                return welcomeUser({state, setState, navigation})
+                return welcomeUser({user, setUser, navigation})
             } else {
-                return welcomeAuthor({state, setState, navigation})
+                return welcomeAuthor({user, setUser, navigation})
             }
         }
     }
@@ -83,54 +90,56 @@ const Home = () => {
 };
 
 
-function welcomeUser({state, setState, navigation}) {
+function welcomeUser({user, setUser, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
+                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-books')}>Search Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-read')}>Your Read List</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/user-favorite')}>Your Favorite List</Button>
-                <Button onClick={() => navigation(`/user-update`, {state})}>Update Profile</Button>
+                <Button onClick={() => navigation(`/user-update`, {user})}>Update Profile</Button>
             </div>
 
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
                 SessionStorageUtil.clearToken();
+                SessionStorageUtil.clearUser();
+                ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/')
-                setState({})
+                setUser({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAuthor({state, setState, navigation}) {
+function welcomeAuthor({user, setUser, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
+                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-books')}>Your Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-request')}>Your Requests</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/add-request')}>Add a Request</Button>
-                <Button onClick={() => navigation('/author-update', {state})}>Update Profile</Button>
+                <Button onClick={() => navigation('/author-update', {user})}>Update Profile</Button>
             </div>
             <br/> <br/> <br/> <br/>
             <Button onClick={() => {
                 SessionStorageUtil.clearToken();
                 navigation('/')
-                setState({})
+                setUser({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAdmin({state, setState, navigation}) {
+function welcomeAdmin({user, setUser, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <h2>Welcome, {state.value?.name} {state.value?.surname}</h2>
+                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-books')}}>List Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => {navigation('/admin-users')}}>List Users</Button>
@@ -144,7 +153,7 @@ function welcomeAdmin({state, setState, navigation}) {
             <Button style={{marginRight: "60px"}} onClick={() => {
                 SessionStorageUtil.clearToken();
                 navigation('/');
-                setState({})
+                setUser({})
             }}>Log Out</Button>
         </div>
     )
