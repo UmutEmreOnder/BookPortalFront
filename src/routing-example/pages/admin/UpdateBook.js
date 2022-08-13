@@ -23,7 +23,6 @@ const UpdateBook = () => {
     const onFinish = async () => {
         await BookService.updateBook(credentials);
         ToastifyUtil.success(MessageUtil.updateBookSuccess())
-        await ToastifyUtil.sleep(1500)
         navigate('/admin-books')
     };
 
@@ -87,18 +86,6 @@ const UpdateBook = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

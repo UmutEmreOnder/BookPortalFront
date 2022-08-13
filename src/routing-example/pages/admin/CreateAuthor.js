@@ -16,7 +16,6 @@ const CreateAuthor = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.createAuthorSuccess())
-            await ToastifyUtil.sleep(2000)
             navigate('/admin-authors')
         } else {
             ToastifyUtil.error(MessageUtil.createAuthorFailed())
@@ -77,18 +76,6 @@ const CreateAuthor = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

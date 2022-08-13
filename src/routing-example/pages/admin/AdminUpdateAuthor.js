@@ -27,7 +27,6 @@ const UpdateAuthor = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
-            await ToastifyUtil.sleep(2500)
             navigate('/admin-authors')
         } else {
             ToastifyUtil.error(MessageUtil.updateProfileFailed())
@@ -91,18 +90,6 @@ const UpdateAuthor = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

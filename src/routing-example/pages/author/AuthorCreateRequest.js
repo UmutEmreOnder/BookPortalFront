@@ -16,7 +16,6 @@ const Request = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.requestSuccess())
-            await ToastifyUtil.sleep(2500)
             navigate('/')
         } else {
             console.log("Bi hata aldin ama nie?")
@@ -77,18 +76,6 @@ const Request = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

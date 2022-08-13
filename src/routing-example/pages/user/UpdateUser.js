@@ -28,7 +28,6 @@ const UpdateUser = () => {
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
             ToastifyUtil.info(MessageUtil.logOut())
-            await ToastifyUtil.sleep(2500)
             SessionStorageService.clearToken()
             navigate('/')
         } else {
@@ -93,18 +92,6 @@ const UpdateUser = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

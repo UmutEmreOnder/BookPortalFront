@@ -17,7 +17,6 @@ const Register = () => {
 
         if (response) {
             ToastifyUtil.success(MessageUtil.registerSuccess())
-            await ToastifyUtil.sleep(2500);
             navigate('/')
         } else {
             ToastifyUtil.error(MessageUtil.registerFailed())
@@ -82,18 +81,6 @@ const Register = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

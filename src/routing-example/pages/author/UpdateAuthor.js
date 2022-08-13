@@ -29,7 +29,6 @@ const UpdateAuthor = () => {
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
             ToastifyUtil.info(MessageUtil.logOut())
-            await ToastifyUtil.sleep(2500)
             SessionStorageUtil.clearToken()
             navigate('/')
         } else {
@@ -94,18 +93,6 @@ const UpdateAuthor = () => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            <ToastContainer
-                position="bottom-right"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </>
     )
 }

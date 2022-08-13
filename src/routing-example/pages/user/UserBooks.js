@@ -154,18 +154,6 @@ class PersonList extends React.Component {
                     loading={loading}
                     onChange={this.handleTableChange}
                 />
-
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={2500}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
             </>
         )
     }

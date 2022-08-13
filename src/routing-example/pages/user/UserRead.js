@@ -48,7 +48,7 @@ function UserRead() {
         {
             title: "Author",
             dataIndex: "author",
-            render: author => `${author.name} ${author.surname}`
+            render: author => `${author?.name} ${author?.surname}`
         }
     ]
 

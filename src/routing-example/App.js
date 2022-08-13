@@ -22,6 +22,7 @@ import UpdateBook from "./pages/admin/UpdateBook";
 import CreateAuthor from "./pages/admin/CreateAuthor";
 import AdminUpdateUser from "./pages/admin/AdminUpdateUser";
 import AdminUpdateAuthor from "./pages/admin/AdminUpdateAuthor";
+import {ToastContainer} from "react-toastify";
 
 const {Header, Content, Footer} = Layout;
 
@@ -77,6 +78,18 @@ export default function App() {
                     Ant Design ©2018 Created by Ant UED
                 </Footer>
             </Layout>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </Router>
     );
 }

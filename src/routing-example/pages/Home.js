@@ -18,17 +18,18 @@ const Home = () => {
     const onFinish = async () => {
         const response = await AuthService.signin(credentials);
 
+        console.log(response)
+
         if (response) {
+            navigation('/')
             ToastifyUtil.success(MessageUtil.loginSuccess());
-            await ToastifyUtil.sleep(2000);
-            window.location.reload()
         } else {
             ToastifyUtil.error(MessageUtil.loginFailed());
         }
     };
 
     useEffect(() => {
-        UserService.getUser?.then(value => setState({value}))
+        UserService.getUser?.then(value => {setState({value})})
     }, [])
 
 
@@ -64,18 +65,6 @@ const Home = () => {
                             <Button type="primary" htmlType="submit">Submit</Button>
                         </Form.Item>
                     </Form>
-
-                    <ToastContainer
-                        position="bottom-right"
-                        autoClose={2500}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                    />
                 </>
             )
         } else {
