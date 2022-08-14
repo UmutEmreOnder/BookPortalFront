@@ -4,7 +4,6 @@ import {Button, Popconfirm, Table} from "antd";
 import AdminRequestService from "../../service/admin/AdminRequestService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
-import {ToastContainer} from "react-toastify";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import {useNavigate} from "react-router-dom";
 
@@ -18,7 +17,7 @@ function AdminBookList() {
             current: 1,
             pageSize: 5
         },
-        loading:  false,
+        loading: false,
     })
 
     const columns = [
@@ -63,13 +62,14 @@ function AdminBookList() {
             render: (record) => {
                 return (
                     <>
-                        <Button onClick={async() => {
+                        <Button onClick={async () => {
                             await AdminRequestService.accept(record);
                             ToastifyUtil.success(MessageUtil.acceptRequest())
                             handleTableChange(state.pagination)
                         }} style={{marginRight: "20px"}}>Accept</Button>
 
-                        <Popconfirm placement="top" title={text} onConfirm={() => confirm(record)} okText="Yes" cancelText="No">
+                        <Popconfirm placement="top" title={text} onConfirm={() => confirm(record)} okText="Yes"
+                                    cancelText="No">
                             <Button>Deny</Button>
                         </Popconfirm>
                     </>
@@ -92,9 +92,10 @@ function AdminBookList() {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     const canLoad = () => {

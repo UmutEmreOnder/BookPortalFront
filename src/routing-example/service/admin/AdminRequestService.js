@@ -14,7 +14,7 @@ const AdminRequestService = (function () {
         return response.data;
     }
 
-    const _acceptRequest = async(record) => {
+    const _acceptRequest = async (record) => {
         const response = await axios.post(`${UrlUtil.adminURL()}/request/accept?id=${record.id}`, {}, {
             withCredentials: true,
             headers: {
@@ -25,7 +25,7 @@ const AdminRequestService = (function () {
         return response.data
     }
 
-    const _denyRequest = async(record) => {
+    const _denyRequest = async (record) => {
         const response = await axios.post(`${UrlUtil.adminURL()}/request/deny?id=${record.id}`, {}, {
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`

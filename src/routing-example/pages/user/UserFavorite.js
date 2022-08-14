@@ -17,7 +17,7 @@ function UserFavorite() {
             current: 1,
             pageSize: 5
         },
-        loading:  false,
+        loading: false,
     })
 
     const requestColumns = [
@@ -63,10 +63,10 @@ function UserFavorite() {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     function handleTableChange(pagination) {

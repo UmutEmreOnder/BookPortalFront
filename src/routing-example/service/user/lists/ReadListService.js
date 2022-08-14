@@ -4,7 +4,7 @@ import UrlUtil from "../../../util/UrlUtil";
 
 const ReadListService = (function () {
     const _addOrDrop = async (records) => {
-        if(await _checkContains(records)) {
+        if (await _checkContains(records)) {
             await axios.delete(`${UrlUtil.userURL()}/book/read?name=${records.name}`, {
                 withCredentials: true,
                 headers: {
@@ -43,8 +43,8 @@ const ReadListService = (function () {
             }
         })
 
-        for(let i = 0; i < list.data.length; i++) {
-            if(list.data[i].name === records.name) {
+        for (let i = 0; i < list.data.length; i++) {
+            if (list.data[i].name === records.name) {
                 return true
             }
         }

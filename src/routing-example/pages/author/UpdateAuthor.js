@@ -1,14 +1,13 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {Button, Form, Input} from "antd";
 import AuthorService from "../../service/author/AuthorService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
-import UserService from "../../service/user/UserService";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
-import {useEffect} from "react";
+import UserService from "../../service/user/UserService";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
@@ -29,7 +28,7 @@ const UpdateAuthor = () => {
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
 
-            if(credentials.username !== username) {
+            if (credentials.username !== username) {
                 ToastifyUtil.info(MessageUtil.logOut())
                 SessionStorageService.clearToken()
                 SessionStorageService.clearUser()

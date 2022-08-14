@@ -1,10 +1,9 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import React, {useState} from "react";
 import UserService from "../service/user/UserService";
 import {Button, Form, Input} from "antd";
 import ToastifyUtil from "../util/ToastifyUtil";
 import MessageUtil from "../util/MessageUtil";
-import React from "react";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -35,7 +34,7 @@ const Register = () => {
     return (
         <>
             <div style={{textAlign: "right", marginRight: "200px"}}>
-                <Button onClick={() => navigate('/')} style={{marginRight: "25px"}} >Login</Button>
+                <Button onClick={() => navigate('/')} style={{marginRight: "25px"}}>Login</Button>
                 <Button onClick={() => navigate('/register')} disabled={true}>Register</Button>
             </div>
             <Form name="basic" labelCol={{span: 8}} wrapperCol={{span: 16}} initialValues={{remember: true}}

@@ -1,12 +1,10 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Button, Form, Input} from "antd";
 import UserService from "../../service/user/UserService";
-import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
-import {useEffect} from "react";
 
 const AdminUpdateUser = () => {
     const navigate = useNavigate();

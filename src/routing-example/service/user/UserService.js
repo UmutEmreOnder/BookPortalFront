@@ -6,7 +6,7 @@ const UserService = (function () {
     const _getUser = async () => {
         let valid = null;
 
-        if(SessionStorageUtil.getToken()) {
+        if (SessionStorageUtil.getToken()) {
             try {
                 valid = await axios.get(`${UrlUtil.userURL()}/`, {
                     headers: {

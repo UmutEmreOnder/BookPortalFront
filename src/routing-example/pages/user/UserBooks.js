@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Input, Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
@@ -10,7 +10,6 @@ import {debounce} from "lodash";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import UserService from "../../service/user/UserService";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
 
 const UserBooks = () => {
     const navigate = useNavigate();
@@ -32,10 +31,10 @@ const UserBooks = () => {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     function handleTableChange(pagination) {
@@ -56,7 +55,9 @@ const UserBooks = () => {
         return SessionStorageUtil.getUser()?.roles[0].id === 2;
     }
 
-    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+    const debouncedSearch = debounce((e) => {
+        onChange(e)
+    }, 500)
 
     async function fetch(params) {
         setState(prevState => {

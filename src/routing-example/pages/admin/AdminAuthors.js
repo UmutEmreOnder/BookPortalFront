@@ -3,7 +3,6 @@ import "antd/dist/antd.css";
 import {Button, Input, Popconfirm, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import AdminAuthorService from "../../service/admin/AdminAuthorService";
-import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {debounce} from "lodash";
@@ -19,7 +18,7 @@ function AdminUserList() {
             current: 1,
             pageSize: 5
         },
-        loading:  false,
+        loading: false,
     })
 
     const columns = [
@@ -77,9 +76,10 @@ function AdminUserList() {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     const canLoad = () => {
@@ -96,7 +96,9 @@ function AdminUserList() {
         fetch({pagination: pagination, search: e.target.value})
     }
 
-    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+    const debouncedSearch = debounce((e) => {
+        onChange(e)
+    }, 500)
 
     async function fetch(params) {
         setState(prevState => {

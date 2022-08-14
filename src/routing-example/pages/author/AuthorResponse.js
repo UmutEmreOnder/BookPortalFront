@@ -16,7 +16,7 @@ function AuthorResponse() {
             current: 1,
             pageSize: 5
         },
-        loading:  false,
+        loading: false,
     })
 
     const requestColumns = [
@@ -52,9 +52,10 @@ function AuthorResponse() {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     const canLoad = () => {

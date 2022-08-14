@@ -1,5 +1,5 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {Button, Form, Input} from "antd";
 import UserService from "../../service/user/UserService";
 import ToastifyUtil from "../../util/ToastifyUtil";
@@ -7,7 +7,6 @@ import MessageUtil from "../../util/MessageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
-import {useEffect} from "react";
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -27,7 +26,7 @@ const UpdateUser = () => {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         }
-    },[])
+    }, [])
 
     const canLoad = () => {
         return SessionStorageUtil.getUser()?.roles[0].id === 2;
@@ -39,7 +38,7 @@ const UpdateUser = () => {
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
 
-            if(credentials.username !== username) {
+            if (credentials.username !== username) {
                 ToastifyUtil.info(MessageUtil.logOut())
                 SessionStorageService.clearToken()
                 SessionStorageService.clearUser()

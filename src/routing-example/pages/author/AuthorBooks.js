@@ -63,9 +63,10 @@ function AuthorBookList() {
         if (!canLoad()) {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
+        } else {
+            const {pagination} = state;
+            fetch({pagination});
         }
-        const {pagination} = state;
-        fetch({pagination});
     }, [])
 
     const canLoad = () => {
@@ -82,7 +83,9 @@ function AuthorBookList() {
         fetch({pagination: pagination, search: e.target.value})
     }
 
-    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+    const debouncedSearch = debounce((e) => {
+        onChange(e)
+    }, 500)
 
     async function fetch(params) {
         setState(prevState => {
