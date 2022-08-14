@@ -5,6 +5,8 @@ import AuthorService from "../../service/author/AuthorService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import {useEffect} from "react";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
@@ -19,7 +21,17 @@ const UpdateAuthor = () => {
         username: location.state.value.username,
     });
 
+    useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
+    }, [])
 
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 1;
+    }
 
     const onFinish = async () => {
         const response = await AuthorService.updateAuthor(credentials);

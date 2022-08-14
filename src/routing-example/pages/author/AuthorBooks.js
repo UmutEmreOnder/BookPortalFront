@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Input, Table} from "antd";
+import {Input, Table} from "antd";
 import AuthorBookService from "../../service/author/AuthorBookService";
-import {useNavigate} from "react-router-dom";
 import {debounce} from "lodash";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import {useNavigate} from "react-router-dom";
 
 const columns = [
     {
@@ -57,9 +60,17 @@ function AuthorBookList() {
     })
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
         const {pagination} = state;
         fetch({pagination});
     }, [])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 3;
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});

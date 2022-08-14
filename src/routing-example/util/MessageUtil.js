@@ -79,6 +79,9 @@ const MessageUtil = function () {
         return "Make sure you have filled every field marked with '*' sign"
     }
 
+    const _noPermission = () => {
+        return "You Cannot Visit This Page!"
+    }
 
     return {
         loginSuccess: _loginSuccess,
@@ -100,7 +103,8 @@ const MessageUtil = function () {
         createAuthorSuccess: _createAuthorSuccess,
         createAuthorFailed: _createAuthorFailed,
         deleteAuthorSuccess: _deleteAuthorSuccess,
-        updateFailed: _updateFailed
+        updateFailed: _updateFailed,
+        noPermission: _noPermission,
     }
 }();
 

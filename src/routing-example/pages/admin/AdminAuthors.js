@@ -7,6 +7,7 @@ import {ToastContainer} from "react-toastify";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {debounce} from "lodash";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 
 function AdminUserList() {
     const navigate = useNavigate();
@@ -73,9 +74,17 @@ function AdminUserList() {
     }
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
         const {pagination} = state;
         fetch({pagination});
     }, [])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 1;
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});

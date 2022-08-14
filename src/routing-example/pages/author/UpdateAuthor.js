@@ -7,6 +7,8 @@ import MessageUtil from "../../util/MessageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
 import UserService from "../../service/user/UserService";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import {useEffect} from "react";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
@@ -44,6 +46,17 @@ const UpdateAuthor = () => {
         const response = await UserService.getUser();
         SessionStorageService.setUser(response)
     }
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 3;
+    }
+
+    useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
+    }, [])
 
     const onFinishFailed = () => {
         ToastifyUtil.info(MessageUtil.updateFailed())

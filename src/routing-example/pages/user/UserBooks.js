@@ -16,7 +16,6 @@ const UserBooks = () => {
     const navigate = useNavigate();
 
     const [state, setState] = useState({
-        search: "",
         data: [],
         read: [],
         favorite: [],
@@ -30,30 +29,36 @@ const UserBooks = () => {
 
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
+
         const {pagination} = state;
         fetch({pagination});
     }, [])
 
-    const handleTableChange = (pagination) => {
-        this.fetch({pagination});
-    };
+    function handleTableChange(pagination) {
+        fetch({pagination});
+    }
 
     const onChange = async (e) => {
-        this.setState({search: e.target.value})
-        const {pagination, search} = this.state
+        const {pagination} = state
 
-        this.fetch({pagination: pagination, search: search})
+        fetch({pagination: pagination, search: e.target.value})
     }
 
     const setUpdatedUser = () => {
         UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
     }
 
-    const debouncedSearch = debounce((e) => {
-        onChange(e)
-    }, 500)
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 2;
+    }
 
-    fetch = async (params = {}) => {
+    const debouncedSearch = debounce((e) => {onChange(e)}, 500)
+
+    async function fetch(params) {
         setState(prevState => {
             return {
                 ...prevState,
@@ -130,8 +135,10 @@ const UserBooks = () => {
     };
 
     const checkReadList = (record) => {
-        for (let i = 0; i < this.state.read.length; i++) {
-            if (this.state.read[i].name === record.name) {
+        const read = SessionStorageUtil.getUser().readList;
+
+        for (let i = 0; i < read.length; i++) {
+            if (read[i].name === record.name) {
                 return true
             }
         }
@@ -140,8 +147,10 @@ const UserBooks = () => {
     }
 
     const checkFavoriteList = (record) => {
-        for (let i = 0; i < this.state.favorite.length; i++) {
-            if (this.state.favorite[i].name === record.name) {
+        const favorite = SessionStorageUtil.getUser().favoriteList;
+
+        for (let i = 0; i < favorite.length; i++) {
+            if (favorite[i].name === record.name) {
                 return true
             }
         }
@@ -149,7 +158,7 @@ const UserBooks = () => {
         return false
     }
 
-    const {data, pagination, loading, columns} = this.state;
+    const {data, pagination, loading, columns} = state;
     return (
         <>
             <div style={{textAlign: "center", margin: "25px"}}>

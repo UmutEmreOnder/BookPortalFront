@@ -121,7 +121,7 @@ function welcomeAuthor({user, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>>
+                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-books')}>Your Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-request')}>Your Requests</Button>

@@ -5,8 +5,11 @@ import AdminRequestService from "../../service/admin/AdminRequestService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import {useNavigate} from "react-router-dom";
 
 function AdminBookList() {
+    const navigate = useNavigate();
     const text = 'Are you sure to deny this?';
 
     const [state, setState] = useState({
@@ -86,9 +89,17 @@ function AdminBookList() {
     }
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
         const {pagination} = state;
         fetch({pagination});
     }, [])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 1;
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});

@@ -4,15 +4,13 @@ import UserService from "../service/user/UserService";
 import {Button, Form, Input} from "antd";
 import ToastifyUtil from "../util/ToastifyUtil";
 import MessageUtil from "../util/MessageUtil";
-import {ToastContainer} from "react-toastify";
 import React from "react";
 
 const Register = () => {
     const navigate = useNavigate();
     const [credentials, setCredentials] = useState({});
 
-    const onFinish = async (values) => {
-        debugger
+    const onFinish = async () => {
         const response = await UserService.register(credentials);
 
         if (response) {
@@ -23,7 +21,7 @@ const Register = () => {
         }
     };
 
-    const onFinishFailed = (errorInfo) => {
+    const onFinishFailed = () => {
         ToastifyUtil.error(MessageUtil.registerFailed())
     };
 

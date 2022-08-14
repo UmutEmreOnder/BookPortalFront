@@ -1,6 +1,10 @@
 import {toast} from "react-toastify";
 
 const ToastifyUtil = (function () {
+    const _sleep = ms => new Promise(
+        resolve => setTimeout(resolve, ms)
+    );
+
     const _success = (message) => toast.success(message, {
         position: "bottom-right",
         autoClose: 2500,
@@ -32,6 +36,7 @@ const ToastifyUtil = (function () {
     })
 
     return {
+        sleep: _sleep,
         success: _success,
         error: _error,
         info: _info

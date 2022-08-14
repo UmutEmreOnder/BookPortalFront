@@ -3,6 +3,9 @@ import "antd/dist/antd.css";
 import {useNavigate} from "react-router-dom";
 import {Button, Table} from "antd";
 import AuthorRequestService from "../../service/author/AuthorRequestService";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
 
 function AuthorRequest() {
     const navigate = useNavigate();
@@ -51,9 +54,17 @@ function AuthorRequest() {
     ]
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
         const {pagination} = state;
         fetch({pagination});
     }, [])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 3;
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});

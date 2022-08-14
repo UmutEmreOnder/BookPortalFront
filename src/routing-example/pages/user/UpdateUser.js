@@ -6,8 +6,8 @@ import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
-import Password from "antd/es/input/Password";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
+import {useEffect} from "react";
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -22,6 +22,16 @@ const UpdateUser = () => {
         username: username,
     });
 
+    useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
+    },[])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 2;
+    }
 
     const onFinish = async () => {
         const response = await UserService.updateUser(credentials);

@@ -8,6 +8,7 @@ import MessageUtil from "../../util/MessageUtil";
 import {ToastContainer} from "react-toastify";
 import UserBookService from "../../service/user/UserBookService";
 import {debounce} from "lodash";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -91,9 +92,17 @@ function AdminBookList() {
     }
 
     useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
         const {pagination} = state;
         fetch({pagination});
     }, [])
+
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 1;
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});

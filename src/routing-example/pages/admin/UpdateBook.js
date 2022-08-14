@@ -6,6 +6,8 @@ import {ToastContainer} from "react-toastify";
 import React from "react";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
+import {useEffect} from "react";
 
 const UpdateBook = () => {
     const navigate = useNavigate();
@@ -18,7 +20,16 @@ const UpdateBook = () => {
         genreName: location.state.value.genre.name,
     })
 
+    useEffect(() => {
+        if (!canLoad()) {
+            ToastifyUtil.error(MessageUtil.noPermission())
+            navigate('/restriction')
+        }
+    }, [])
 
+    const canLoad = () => {
+        return SessionStorageUtil.getUser()?.roles[0].id === 1;
+    }
 
     const onFinish = async () => {
         await BookService.updateBook(credentials);
