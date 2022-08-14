@@ -49,7 +49,7 @@ class PersonList extends React.Component {
     fetch = async (params = {}) => {
         this.setState({loading: true});
 
-        const data = UserBookService.fetchBooks(params);
+        const data = await UserBookService.fetchBooks(params);
         const readList = SessionStorageUtil.getUser().readList;
         const favoriteList = SessionStorageUtil.getUser().favoriteList;
 

@@ -4,9 +4,9 @@ import {Button, Form, Input} from "antd";
 import AuthorService from "../../service/author/AuthorService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
-import SessionStorageUtil from "../../util/SessionStorageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
+import UserService from "../../service/user/UserService";
 
 const UpdateAuthor = () => {
     const navigate = useNavigate();
@@ -21,12 +21,8 @@ const UpdateAuthor = () => {
         username: username,
     });
 
-
-
-
     const onFinish = async () => {
         const response = await AuthorService.updateAuthor(credentials);
-
 
         if (response) {
             ToastifyUtil.success(MessageUtil.updateProfileSuccess())
@@ -37,15 +33,20 @@ const UpdateAuthor = () => {
                 SessionStorageService.clearUser()
             }
 
+            await setUserToken();
             navigate('/')
         } else {
             ToastifyUtil.error(MessageUtil.updateProfileFailed())
         }
     };
 
+    const setUserToken = async () => {
+        const response = await UserService.getUser();
+        SessionStorageService.setUser(response)
+    }
 
-    const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
+    const onFinishFailed = () => {
+        ToastifyUtil.info(MessageUtil.updateFailed())
     };
 
     const handleChange = (event) => {

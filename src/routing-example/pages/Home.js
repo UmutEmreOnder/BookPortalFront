@@ -27,7 +27,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
+        setUserToken()
         const value = SessionStorageUtil.getUser();
         setUser({value})
     }, [])
@@ -37,6 +37,10 @@ const Home = () => {
             SessionStorageUtil.setUser(user.value)
         }
     }, [user])
+
+    const setUserToken = () => {
+        UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
+    }
 
 
     const onFinishFailed = (errorInfo) => {
@@ -89,7 +93,8 @@ const Home = () => {
 };
 
 
-function welcomeUser({user, setUser, navigation}) {
+function welcomeUser({user, navigation}) {
+
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
@@ -107,17 +112,16 @@ function welcomeUser({user, setUser, navigation}) {
                 SessionStorageUtil.clearUser();
                 ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/')
-                setUser({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAuthor({user, setUser, navigation}) {
+function welcomeAuthor({user, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
-                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>
+                <h2>Welcome, {user.value?.name} {user.value?.surname}</h2>>
                 <br/>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-books')}>Your Books</Button>
                 <Button style={{marginRight: "25px"}} onClick={() => navigation('/author-request')}>Your Requests</Button>
@@ -130,13 +134,12 @@ function welcomeAuthor({user, setUser, navigation}) {
                 SessionStorageUtil.clearUser();
                 ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/')
-                setUser({})
             }}>Log Out</Button>
         </div>
     )
 }
 
-function welcomeAdmin({user, setUser, navigation}) {
+function welcomeAdmin({user, navigation}) {
     return (
         <div style={{textAlign: "center"}}>
             <div style={{textAlign: "center", marginTop: "70px"}}>
@@ -156,7 +159,6 @@ function welcomeAdmin({user, setUser, navigation}) {
                 SessionStorageUtil.clearUser();
                 ToastifyUtil.info(MessageUtil.logOut())
                 navigation('/');
-                setUser({})
             }}>Log Out</Button>
         </div>
     )

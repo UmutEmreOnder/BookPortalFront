@@ -7,6 +7,7 @@ import MessageUtil from "../../util/MessageUtil";
 import SessionStorageService from "../../util/SessionStorageUtil";
 import sessionStorageUtil from "../../util/SessionStorageUtil";
 import Password from "antd/es/input/Password";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 
 const UpdateUser = () => {
     const navigate = useNavigate();
@@ -34,12 +35,17 @@ const UpdateUser = () => {
                 SessionStorageService.clearUser()
             }
 
+            await setUserToken();
             navigate('/')
         } else {
             ToastifyUtil.error(MessageUtil.updateProfileFailed())
         }
     };
 
+    const setUserToken = async () => {
+        const response = await UserService.getUser();
+        SessionStorageService.setUser(response)
+    }
 
     const onFinishFailed = () => {
         ToastifyUtil.info(MessageUtil.updateFailed())
@@ -89,11 +95,6 @@ const UpdateUser = () => {
                 <Form.Item label="Username" name="username"
                            rules={[{required: true, message: "Please input your username!"}]}>
                     <Input onChange={handleChange} name="username" value={credentials.username}/>
-                </Form.Item>
-
-                <Form.Item label="Password" name="password"
-                           rules={[{required: true, message: "Please input your password!"}]}>
-                    <Password onChange={handleChange} name="password" value={credentials.password}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
