@@ -83,6 +83,14 @@ const MessageUtil = function () {
         return "You Cannot Visit This Page!"
     }
 
+    const _sentSuccess = () => {
+        return "A Confirmation E-Mail Sent!"
+    }
+
+    const _sentFail = () => {
+        return "There is no registered user for this e-mail address or it has already been activated."
+    }
+
     return {
         loginSuccess: _loginSuccess,
         loginFailed: _loginFailed,
@@ -105,6 +113,8 @@ const MessageUtil = function () {
         deleteAuthorSuccess: _deleteAuthorSuccess,
         updateFailed: _updateFailed,
         noPermission: _noPermission,
+        sentSucces: _sentSuccess,
+        sentFail: _sentFail
     }
 }();
 

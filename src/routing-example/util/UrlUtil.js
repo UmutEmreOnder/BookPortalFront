@@ -15,11 +15,16 @@ const UrlUtil = function () {
         return `${_baseUrl()}/api/author`
     }
 
+    const _registerUrl = () => {
+        return `${_baseUrl()}/api/register`
+    }
+
     return {
         baseURL: _baseUrl,
         adminURL: _adminUrl,
         authorURL: _authorUrl,
         userURL: _userUrl,
+        registerURL: _registerUrl
     }
 }();
 

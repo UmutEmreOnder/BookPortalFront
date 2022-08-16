@@ -26,7 +26,7 @@ const UserService = (function () {
     const _register = async (credentials) => {
         let response = null;
         try {
-            response = await axios.post(`${UrlUtil.userURL()}/`, credentials)
+            response = await axios.post(`${UrlUtil.registerURL()}/`, credentials)
         } catch (error) {
             return null;
         }
