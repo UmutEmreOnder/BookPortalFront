@@ -85,7 +85,7 @@ function UserRead() {
             }
         })
 
-        const data = await UserBookService.fetchReadBooks(params);
+        const data = SessionStorageUtil.getUser().readList;
 
         setState(() => {
             return {

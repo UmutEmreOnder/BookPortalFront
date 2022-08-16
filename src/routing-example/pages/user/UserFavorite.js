@@ -86,7 +86,7 @@ function UserFavorite() {
             }
         })
 
-        const data = await UserBookService.fetchFavoriteBooks(params);
+        const data = SessionStorageUtil.getUser().favoriteList;
 
         setState(() => {
             return {

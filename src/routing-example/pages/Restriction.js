@@ -6,10 +6,10 @@ const Restriction = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        test();
+        sleepThenNavigate();
     }, [])
 
-    const test = async () => {
+    const sleepThenNavigate = async () => {
         await ToastifyUtil.sleep(3000)
         navigate('/')
     }
