@@ -11,13 +11,14 @@ const Request = () => {
     const [credentials, setCredentials] = useState({});
 
     const onFinish = async () => {
+        console.log(credentials)
         const response = await AuthorRequestService.create(credentials);
 
         if (response) {
             ToastifyUtil.success(MessageUtil.requestSuccess())
             navigate('/')
         } else {
-            console.log("Bi hata aldin ama nie?")
+            ToastifyUtil.error(MessageUtil.requestFailed());
         }
     };
 

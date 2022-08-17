@@ -49,7 +49,7 @@ function AuthorRequest() {
                 {text: "History", value: "HISTORY"},
             ],
             render: (respond) => `${respond.charAt(0).toUpperCase() + respond.toLowerCase().slice(1)}`,
-            onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
+            onFilter: (value, record) => record.genreName.indexOf(value) === 0
         }
     ]
 

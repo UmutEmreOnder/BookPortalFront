@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Input, Table} from "antd";
+import {Button, Input, Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
 import ReadListService from "../../service/user/lists/ReadListService";
 import FavoriteListService from "../../service/user/lists/FavoriteListService";
@@ -47,10 +47,6 @@ const UserBooks = () => {
         fetch({pagination: pagination, search: e.target.value})
     }
 
-    const setUpdatedUser = () => {
-        UserService.getUser()?.then(value => SessionStorageUtil.setUser(value))
-    }
-
     const canLoad = () => {
         return SessionStorageUtil.getUser()?.roles[0].id === 2;
     }
@@ -85,11 +81,7 @@ const UserBooks = () => {
                     title: "Name",
                     dataIndex: "name",
                     sorter: (a, b) => a.name.localeCompare(b.name),
-                    width: "20%"
-                },
-                {
-                    title: "ISBN",
-                    dataIndex: "isbn",
+                    render: (name) => <Button style={{width: "300px", height: "40px", background: "transparent", border: "none"}} onClick={() => navigate(`/book/${name}`)}>{name}</Button>,
                     width: "20%"
                 },
                 {
@@ -111,52 +103,9 @@ const UserBooks = () => {
                     title: "Author",
                     dataIndex: "author",
                     render: (author) => `${author?.name} ${author?.surname}`
-                },
-                {
-                    title: 'Read List',
-                    render: (text, record) => (
-                        <input type={"checkbox"} defaultChecked={checkReadList(record)} onClick={async () => {
-                            const response = await ReadListService.addOrDrop(record);
-                            setUpdatedUser();
-                            response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
-                        }}/>
-                    ),
-                },
-                {
-                    title: 'Favorite List',
-                    render: (text, record) => (
-                        <input type={"checkbox"} defaultChecked={checkFavoriteList(record)} onClick={async () => {
-                            const response = await FavoriteListService.addOrDrop(record)
-                            setUpdatedUser();
-                            response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
-                        }}/>
-                    ),
-                }]
+                }
+            ]
         });
-    };
-
-    const checkReadList = (record) => {
-        const read = SessionStorageUtil.getUser().readList;
-
-        for (let i = 0; i < read.length; i++) {
-            if (read[i].name === record.name) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    const checkFavoriteList = (record) => {
-        const favorite = SessionStorageUtil.getUser().favoriteList;
-
-        for (let i = 0; i < favorite.length; i++) {
-            if (favorite[i].name === record.name) {
-                return true
-            }
-        }
-
-        return false
     }
 
     const {data, pagination, loading, columns} = state;

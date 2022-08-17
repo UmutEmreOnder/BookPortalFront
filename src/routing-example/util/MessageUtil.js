@@ -91,6 +91,11 @@ const MessageUtil = function () {
         return "There is no registered user for this e-mail address or it has already been activated."
     }
 
+    const _requestFail = () => {
+        return "The Request Cannot Be Sent!"
+    }
+
+
     return {
         loginSuccess: _loginSuccess,
         loginFailed: _loginFailed,
@@ -114,7 +119,8 @@ const MessageUtil = function () {
         updateFailed: _updateFailed,
         noPermission: _noPermission,
         sentSucces: _sentSuccess,
-        sentFail: _sentFail
+        sentFail: _sentFail,
+        requestFailed: _requestFail,
     }
 }();
 

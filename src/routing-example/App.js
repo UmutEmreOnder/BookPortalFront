@@ -25,6 +25,7 @@ import AdminUpdateAuthor from "./pages/admin/AdminUpdateAuthor";
 import {ToastContainer} from "react-toastify";
 import Restriction from "./pages/Restriction";
 import Verify from "./pages/Verify";
+import BookPage from "./pages/book/BookPage";
 
 const {Header, Content, Footer} = Layout;
 
@@ -68,6 +69,7 @@ export default function App() {
                             <Route path='/admin-update-author' element={<AdminUpdateAuthor/>}/>
 
                             <Route path='/book-update' element={<UpdateBook/>}/>
+                            <Route path='/book/*' element={<BookPage/>}/>
 
                             <Route path='/restriction' element={<Restriction/>}/>
                             <Route path='/verify' element={<Verify/>}/>

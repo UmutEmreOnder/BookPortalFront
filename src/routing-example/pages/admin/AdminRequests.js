@@ -50,7 +50,7 @@ function AdminBookList() {
                 {text: "Sci-Fi", value: "SCI_FI"},
                 {text: "History", value: "HISTORY"},
             ],
-            onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
+            onFilter: (value, record) => record.genreName.indexOf(value) === 0,
         },
         {
             title: "Author",

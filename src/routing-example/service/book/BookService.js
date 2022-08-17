@@ -13,8 +13,20 @@ const BookService = (function () {
         return response.data;
     }
 
+    const _fetchBook = async (credentials) => {
+        const response = await axios.get(`${UrlUtil.userURL()}${credentials}`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
+
     return {
-        updateBook: _updateBook
+        updateBook: _updateBook,
+        fetchBook: _fetchBook,
     }
 })();
 
