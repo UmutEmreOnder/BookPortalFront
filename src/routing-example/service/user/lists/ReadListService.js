@@ -5,7 +5,7 @@ import UrlUtil from "../../../util/UrlUtil";
 const ReadListService = (function () {
     const _addOrDrop = async (records) => {
         if (await _checkContains(records)) {
-            await axios.delete(`${UrlUtil.userURL()}/book/read?name=${records.name}`, {
+            await axios.delete(`${UrlUtil.userURL()}/book/read?id=${records.id}`, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -14,7 +14,7 @@ const ReadListService = (function () {
 
             return "DELETE";
         } else {
-            await axios.post(`${UrlUtil.userURL()}/book/read?name=${records.name}`, {}, {
+            await axios.post(`${UrlUtil.userURL()}/book/read?id=${records.id}`, {}, {
                 withCredentials: true,
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -52,10 +52,19 @@ const ReadListService = (function () {
         return false
     };
 
+    const _drop = async (records) => {
+        return await axios.delete(`${UrlUtil.userURL()}/book/read?id=${records.id}`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        });
+    }
+
     return {
         addOrDrop: _addOrDrop,
         checkContains: _checkContains,
-        getReadList: _getReadList
+        getReadList: _getReadList,
+        drop: _drop
     };
 })();
 

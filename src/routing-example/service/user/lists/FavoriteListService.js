@@ -5,14 +5,14 @@ import UrlUtil from "../../../util/UrlUtil";
 const ReadListService = (function () {
     const _addOrDrop = async (records) => {
         if (await _checkContains(records)) {
-            await axios.delete(`${UrlUtil.userURL()}/book/favorite?name=${records.name}`, {
+            await axios.delete(`${UrlUtil.userURL()}/book/favorite?id=${records.id}`, {
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
             });
             return "DELETE"
         } else {
-            await axios.post(`${UrlUtil.userURL()}/book/favorite?name=${records.name}`, {}, {
+            await axios.post(`${UrlUtil.userURL()}/book/favorite?id=${records.id}`, {}, {
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
@@ -20,6 +20,14 @@ const ReadListService = (function () {
             return "ADD"
         }
     };
+
+    const _drop = async (records) => {
+        return await axios.delete(`${UrlUtil.userURL()}/book/favorite?id=${records.id}`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        });
+    }
 
     const _getFavoriteList = async () => {
         const response = await axios.get(`${UrlUtil.userURL()}/book/favorite`, {
@@ -50,7 +58,8 @@ const ReadListService = (function () {
     return {
         addOrDrop: _addOrDrop,
         checkContains: _checkContains,
-        getFavoriteList: _getFavoriteList
+        getFavoriteList: _getFavoriteList,
+        drop: _drop,
     };
 })();
 

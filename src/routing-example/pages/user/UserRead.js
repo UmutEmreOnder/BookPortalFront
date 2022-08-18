@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Table} from "antd";
+import {Button, Table} from "antd";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {useNavigate} from "react-router-dom";
+import FavoriteListService from "../../service/user/lists/FavoriteListService";
+import UserService from "../../service/user/UserService";
+import SessionStorageService from "../../util/SessionStorageUtil";
+import ReadListService from "../../service/user/lists/ReadListService";
 
 function UserRead() {
     const navigate = useNavigate();
@@ -20,19 +24,9 @@ function UserRead() {
 
     const requestColumns = [
         {
-            title: "Create Date",
-            dataIndex: "createDate",
-            sorter: (a, b) => a.id - b.id // https://www.youtube.com/shorts/SzvWMClt-iU
-        },
-        {
             title: "Name",
             dataIndex: "name",
             sorter: (a, b) => a.name.localeCompare(b.name),
-            width: "20%"
-        },
-        {
-            title: "ISBN",
-            dataIndex: "isbn",
             width: "20%"
         },
         {
@@ -54,6 +48,20 @@ function UserRead() {
             title: "Author",
             dataIndex: "author",
             render: author => `${author?.name} ${author?.surname}`
+        },
+        {
+            title: "Action",
+            render: (record) => {
+                return (
+                    <>
+                        <Button onClick={async () => {
+                            await ReadListService.drop(record);
+                            ToastifyUtil.success(MessageUtil.removeBook())
+                            await setUserToken()
+                            handleTableChange()
+                        }} style={{marginRight: "20px"}}>Delete</Button>
+                    </>
+                )}
         }
     ]
 
@@ -66,6 +74,11 @@ function UserRead() {
             fetch({pagination});
         }
     }, [])
+
+    const setUserToken = async () => {
+        const response = await UserService.getUser();
+        SessionStorageService.setUser(response)
+    }
 
     function handleTableChange(pagination) {
         fetch({pagination});
