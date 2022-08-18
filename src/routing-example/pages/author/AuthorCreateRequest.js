@@ -11,7 +11,6 @@ const Request = () => {
     const [credentials, setCredentials] = useState({});
 
     const onFinish = async () => {
-        console.log(credentials)
         const response = await AuthorRequestService.create(credentials);
 
         if (response) {

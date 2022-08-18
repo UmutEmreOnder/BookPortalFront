@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 
 import {Table} from "antd";
-import UserBookService from "../../service/user/UserBookService";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";

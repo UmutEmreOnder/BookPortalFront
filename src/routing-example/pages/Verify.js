@@ -1,9 +1,8 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ToastifyUtil from "../util/ToastifyUtil";
 import {useLocation, useNavigate} from "react-router-dom";
 import VerifyService from "../service/VerifyService"
 import {Button, Form, Input} from "antd";
-import React from "react";
 import MessageUtil from "../util/MessageUtil";
 
 const Verify = () => {
@@ -18,7 +17,7 @@ const Verify = () => {
         verify().then((value) => {
             setState({value})
 
-            if(value === true) {
+            if (value === true) {
                 sleepThenNavigate()
             }
         })
@@ -76,14 +75,16 @@ function Fail({onFinish, onFinishFailed, handleChange, credentials}) {
         <div style={{textAlign: "center", marginTop: "30px"}}>
             <h1>The Token Is Expired or Incorrect!</h1>
             <br/> <br/> <br/>
-            <h3>If you think there is a mistake, you can enter your email address in the form below and get a new link!</h3>
+            <h3>If you think there is a mistake, you can enter your email address in the form below and get a new
+                link!</h3>
 
             <Form name="basic" labelCol={{span: 8}} wrapperCol={{span: 16}} initialValues={{remember: true}}
                   onFinish={onFinish} onFinishFailed={onFinishFailed}
                   style={{margin: "auto", width: 400, marginTop: "80px"}}>
 
                 <Form.Item label="Email" name="email"
-                           rules={[{required: true, message: "Please input your email!"}]} style={{marginRight: "90px"}}>
+                           rules={[{required: true, message: "Please input your email!"}]}
+                           style={{marginRight: "90px"}}>
                     <Input onChange={handleChange} name="email" value={credentials.email}/>
                 </Form.Item>
 

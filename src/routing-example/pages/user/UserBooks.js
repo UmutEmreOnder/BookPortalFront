@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Input, Table} from "antd";
+import {Button, Input, Rate, Table} from "antd";
 import UserBookService from "../../service/user/UserBookService";
-import ReadListService from "../../service/user/lists/ReadListService";
-import FavoriteListService from "../../service/user/lists/FavoriteListService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {debounce} from "lodash";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
-import UserService from "../../service/user/UserService";
 import {useNavigate} from "react-router-dom";
 
 const UserBooks = () => {
@@ -16,8 +13,6 @@ const UserBooks = () => {
 
     const [state, setState] = useState({
         data: [],
-        read: [],
-        favorite: [],
         pagination: {
             current: 1,
             pageSize: 5
@@ -64,8 +59,6 @@ const UserBooks = () => {
         });
 
         const data = await UserBookService.fetchBooks(params);
-        const readList = SessionStorageUtil.getUser().readList;
-        const favoriteList = SessionStorageUtil.getUser().favoriteList;
 
         setState({
             loading: false,
@@ -74,14 +67,16 @@ const UserBooks = () => {
                 ...params.pagination,
                 total: data.length
             },
-            read: readList,
-            favorite: favoriteList,
             columns: [
+                {
+                    title: "Page",
+                    dataIndex: "id",
+                    render: (id) => <Button onClick={() => navigate(`/book/${id}`)}>Book's Page</Button>
+                },
                 {
                     title: "Name",
                     dataIndex: "name",
                     sorter: (a, b) => a.name.localeCompare(b.name),
-                    render: (name) => <Button style={{width: "300px", height: "40px", background: "transparent", border: "none"}} onClick={() => navigate(`/book/${name}`)}>{name}</Button>,
                     width: "20%"
                 },
                 {
@@ -103,6 +98,12 @@ const UserBooks = () => {
                     title: "Author",
                     dataIndex: "author",
                     render: (author) => `${author?.name} ${author?.surname}`
+                },
+                {
+                    title: "Rate",
+                    dataIndex: "rate",
+                    sorter: (a, b) => a.rate - b.rate,
+                    render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
                 }
             ]
         });

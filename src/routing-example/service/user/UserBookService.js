@@ -50,11 +50,32 @@ const UserBookService = (function () {
         return response.data;
     }
 
+    const _fetchRate = async (bookId) => {
+        const response = await axios.get(`${UrlUtil.userURL()}/rate/${bookId}`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
+    const _addRate = async (bookId, value) => {
+        const response = await axios.post(`${UrlUtil.userURL()}/rate/${bookId}?rate=${value}`, {}, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+        return response;
+    }
+
 
     return {
         fetchBooks: _fetchBooks,
         fetchReadBooks: _fetchReadBooks,
-        fetchFavoriteBooks: _fetchFavoriteBooks
+        fetchFavoriteBooks: _fetchFavoriteBooks,
+        fetchRate: _fetchRate,
+        addRate: _addRate,
     };
 })();
 
