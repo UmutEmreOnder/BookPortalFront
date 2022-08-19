@@ -8,9 +8,10 @@ const UserBookService = (function () {
 
         const response = await axios.get(url, {
             params: {
-                results: params.pagination.pageSize,
                 page: params.pagination.current,
-                ...params
+                pageSize: params.pagination.pageSize,
+                field: params.sorter?.field,
+                order: params.sorter?.order,
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -40,6 +41,8 @@ const UserBookService = (function () {
             params: {
                 results: params.pagination.pageSize,
                 page: params.pagination.current,
+                field: params.filter.field,
+                order: params.filter.order,
                 ...params
             },
             headers: {

@@ -8,9 +8,10 @@ const AdminAuthorService = (function () {
 
         const response = await axios.get(url, {
             params: {
-                results: params.pagination.pageSize,
+                pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
-                ...params
+                field: params.sorter?.field,
+                order: params.sorter?.order,
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -30,9 +31,20 @@ const AdminAuthorService = (function () {
         return response.data;
     };
 
+    const _getCount = async () => {
+        const response = await axios.get(`${UrlUtil.adminURL()}/author/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
     return {
         fetchAuthors: _getAuthors,
-        delete: _delete
+        delete: _delete,
+        getCount: _getCount,
     }
 })();
 

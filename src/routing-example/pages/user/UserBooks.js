@@ -7,6 +7,7 @@ import MessageUtil from "../../util/MessageUtil";
 import {debounce} from "lodash";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import {useNavigate} from "react-router-dom";
+import BookService from "../../service/book/BookService";
 
 const UserBooks = () => {
     const navigate = useNavigate();
@@ -15,8 +16,13 @@ const UserBooks = () => {
         data: [],
         pagination: {
             current: 1,
-            pageSize: 5
+            pageSize: 5,
         },
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
         loading: false,
         columns: [],
     })
@@ -27,13 +33,13 @@ const UserBooks = () => {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, sorter, filter});
         }
     }, [])
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        fetch({pagination, filter, sorter});
     }
 
     const onChange = async (e) => {
@@ -51,6 +57,13 @@ const UserBooks = () => {
     }, 500)
 
     async function fetch(params) {
+        if (params.filter?.order === undefined) {
+            params.filter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
         setState(prevState => {
             return {
                 ...prevState,
@@ -59,13 +72,14 @@ const UserBooks = () => {
         });
 
         const data = await UserBookService.fetchBooks(params);
+        const length = await BookService.getCount();
 
         setState({
             loading: false,
             data: data,
             pagination: {
                 ...params.pagination,
-                total: data.length
+                total: length
             },
             columns: [
                 {
@@ -76,7 +90,7 @@ const UserBooks = () => {
                 {
                     title: "Name",
                     dataIndex: "name",
-                    sorter: (a, b) => a.name.localeCompare(b.name),
+                    sorter: true,
                     width: "20%"
                 },
                 {
@@ -102,7 +116,7 @@ const UserBooks = () => {
                 {
                     title: "Rate",
                     dataIndex: "rate",
-                    sorter: (a, b) => a.rate - b.rate,
+                    sorter: true,
                     render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
                 }
             ]

@@ -6,6 +6,7 @@ import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import {useNavigate} from "react-router-dom";
+import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -17,6 +18,11 @@ function AdminBookList() {
             current: 1,
             pageSize: 5
         },
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
         loading: false,
     })
 
@@ -24,12 +30,12 @@ function AdminBookList() {
         {
             title: "Create Date",
             dataIndex: "createDate",
-            sorter: (a, b) => a.id - b.id // https://www.youtube.com/shorts/SzvWMClt-iU
+            sorter: true,
         },
         {
             title: "Name",
             dataIndex: "bookName",
-            sorter: (a, b) => a.bookName.localeCompare(b.bookName),
+            sorter: true,
             width: "20%"
         },
         {
@@ -93,8 +99,8 @@ function AdminBookList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
@@ -102,11 +108,18 @@ function AdminBookList() {
         return SessionStorageUtil.getUser()?.roles[0].id === 1;
     }
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        fetch({pagination, filter, sorter});
     }
 
     async function fetch(params) {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
         setState(prevState => {
             return {
                 data: prevState.data,
@@ -116,13 +129,14 @@ function AdminBookList() {
         })
 
         const data = await AdminRequestService.fetchRequests(params);
+        const length = await AdminRequestService.getCount();
 
         setState(() => {
             return {
                 data: data,
                 pagination: {
-                    ...params?.pagination,
-                    total: data.length
+                    ...params.pagination,
+                    total: length
                 },
                 loading: false
             }

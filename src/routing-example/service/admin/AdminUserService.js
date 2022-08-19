@@ -8,9 +8,10 @@ const AdminUserService = (function () {
 
         const response = await axios.get(url, {
             params: {
-                results: params.pagination.pageSize,
+                pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
-                ...params
+                field: params.sorter?.field,
+                order: params.sorter?.order,
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -30,9 +31,20 @@ const AdminUserService = (function () {
         return response.data;
     };
 
+    const _getCount = async () => {
+        const response = await axios.get(`${UrlUtil.adminURL()}/user/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
     return {
         fetchUsers: _getUsers,
-        delete: _delete
+        delete: _delete,
+        getCount: _getCount,
     }
 })();
 

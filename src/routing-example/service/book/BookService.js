@@ -33,11 +33,22 @@ const BookService = (function () {
         return response.data.rate;
     }
 
+    const _getCount = async () => {
+        const response = await axios.get(`${UrlUtil.userURL()}/book/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
 
     return {
         updateBook: _updateBook,
         fetchBook: _fetchBook,
         fetchRate: _fetchRate,
+        getCount: _getCount,
     }
 })();
 

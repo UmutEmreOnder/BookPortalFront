@@ -18,6 +18,11 @@ function AdminUserList() {
             current: 1,
             pageSize: 5
         },
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
         loading: false,
     })
 
@@ -25,7 +30,7 @@ function AdminUserList() {
         {
             title: "Name",
             dataIndex: "name",
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: true,
             width: "20%"
         },
         {
@@ -36,7 +41,7 @@ function AdminUserList() {
         {
             title: "Age",
             dataIndex: "age",
-            sorter: (a, b) => a.age - b.age
+            sorter: true
         },
         {
             title: "Email",
@@ -77,8 +82,8 @@ function AdminUserList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
@@ -86,14 +91,14 @@ function AdminUserList() {
         return SessionStorageUtil.getUser()?.roles[0].id === 1;
     }
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        fetch({pagination, filter, sorter});
     }
 
     const onChange = async (e) => {
-        const {pagination} = state
+        const {pagination, filter, sorter} = state
 
-        fetch({pagination: pagination, search: e.target.value})
+        fetch({pagination: pagination, filter: filter, sorter: sorter, search: e.target.value})
     }
 
     const debouncedSearch = debounce((e) => {
@@ -101,6 +106,13 @@ function AdminUserList() {
     }, 500)
 
     async function fetch(params) {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
         setState(prevState => {
             return {
                 data: prevState.data,
@@ -110,13 +122,14 @@ function AdminUserList() {
         })
 
         const data = await AdminAuthorService.fetchAuthors(params);
+        const length = await AdminAuthorService.getCount();
 
         setState(() => {
             return {
                 data: data,
                 pagination: {
-                    ...params?.pagination,
-                    total: data.length
+                    ...params.pagination,
+                    total: length
                 },
                 loading: false
             }

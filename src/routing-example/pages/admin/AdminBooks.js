@@ -8,6 +8,7 @@ import MessageUtil from "../../util/MessageUtil";
 import UserBookService from "../../service/user/UserBookService";
 import {debounce} from "lodash";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
+import BookService from "../../service/book/BookService";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -19,6 +20,11 @@ function AdminBookList() {
             current: 1,
             pageSize: 5
         },
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
         loading: false,
     })
 
@@ -26,7 +32,7 @@ function AdminBookList() {
         {
             title: "Name",
             dataIndex: "name",
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: true,
             width: "20%"
         },
         {
@@ -57,12 +63,12 @@ function AdminBookList() {
         {
             title: "Read Count",
             dataIndex: "readCounter",
-            sorter: (a, b) => a.readCounter - b.readCounter
+            sorter: true,
         },
         {
             title: "Favorite Count",
             dataIndex: "favoriteCounter",
-            sorter: (a, b) => a.favoriteCounter - b.favoriteCounter
+            sorter: true,
         },
         {
             title: "Delete",
@@ -95,8 +101,8 @@ function AdminBookList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
@@ -104,14 +110,14 @@ function AdminBookList() {
         return SessionStorageUtil.getUser()?.roles[0].id === 1;
     }
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        fetch({pagination, filter, sorter});
     }
 
     const onChange = async (e) => {
-        const {pagination} = state
+        const {pagination, filter, sorter} = state
 
-        fetch({pagination: pagination, search: e.target.value})
+        fetch({pagination: pagination, filter: filter, sorter: sorter, search: e.target.value})
     }
 
     const debouncedSearch = debounce((e) => {
@@ -119,6 +125,13 @@ function AdminBookList() {
     }, 500)
 
     async function fetch(params) {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
         setState(prevState => {
             return {
                 data: prevState.data,
@@ -128,13 +141,14 @@ function AdminBookList() {
         })
 
         const data = await UserBookService.fetchBooks(params);
+        const length = await BookService.getCount();
 
         setState(() => {
             return {
                 data: data,
                 pagination: {
                     ...params?.pagination,
-                    total: data.length
+                    total: length
                 },
                 loading: false
             }
