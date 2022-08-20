@@ -16,6 +16,11 @@ function AuthorRequest() {
             current: 1,
             pageSize: 5
         },
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
         loading: false,
     })
 
@@ -23,12 +28,12 @@ function AuthorRequest() {
         {
             title: "Create Date",
             dataIndex: "createDate",
-            sorter: (a, b) => a.id - b.id // https://www.youtube.com/shorts/SzvWMClt-iU
+            sorter: true
         },
         {
             title: "Name",
             dataIndex: "bookName",
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: true,
             width: "20%"
         },
         {
@@ -58,8 +63,8 @@ function AuthorRequest() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
@@ -67,27 +72,38 @@ function AuthorRequest() {
         return SessionStorageUtil.getUser()?.roles[0].id === 3;
     }
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        fetch({pagination, filter, sorter});
     }
 
     async function fetch(params) {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
         setState(prevState => {
             return {
-                data: prevState.data,
-                pagination: prevState.pagination,
-                loading: true
+                ...prevState,
+                sorter: params.sorter,
+                filter: params.filter,
+                loading: true,
+
             }
         })
 
         const data = await AuthorRequestService.fetchRequests(params);
+        const length = await AuthorRequestService.getReqCount();
 
-        setState(() => {
+        setState((prevState) => {
             return {
+                ...prevState,
                 data: data,
                 pagination: {
-                    ...params?.pagination,
-                    total: data.length
+                    ...params.pagination,
+                    total: length
                 },
                 loading: false
             }

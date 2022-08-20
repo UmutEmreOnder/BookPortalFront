@@ -13,8 +13,14 @@ const AuthorRequestService = (function () {
         return response.data;
     }
 
-    const _getRequests = async () => {
+    const _getRequests = async (params) => {
         const response = await axios.get(`${UrlUtil.authorURL()}/current-requests`, {
+            params: {
+                page: params.pagination.current,
+                pageSize: params.pagination.pageSize,
+                field: params.sorter?.field,
+                order: params.sorter?.order,
+            },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
@@ -23,8 +29,14 @@ const AuthorRequestService = (function () {
         return response.data;
     }
 
-    const _getResponses = async () => {
+    const _getResponses = async (params) => {
         const response = await axios.get(`${UrlUtil.authorURL()}/responded-requests`, {
+            params: {
+                page: params.pagination.current,
+                pageSize: params.pagination.pageSize,
+                field: params.sorter?.field,
+                order: params.sorter?.order,
+            },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
@@ -32,11 +44,34 @@ const AuthorRequestService = (function () {
 
         return response.data;
     }
+
+    const _getRequestCount = async () => {
+        const response = await axios.get(`${UrlUtil.authorURL()}/current-requests/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
+    const _getRespondCount = async () => {
+        const response = await axios.get(`${UrlUtil.authorURL()}/responded-requests/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
 
     return {
         fetchRequests: _getRequests,
         fetchResponses: _getResponses,
-        create: _create
+        create: _create,
+        getReqCount: _getRequestCount,
+        getResCount: _getRespondCount,
     }
 })();
 

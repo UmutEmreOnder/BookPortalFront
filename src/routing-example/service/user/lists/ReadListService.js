@@ -6,7 +6,6 @@ const ReadListService = (function () {
     const _addOrDrop = async (records) => {
         if (await _checkContains(records)) {
             await axios.delete(`${UrlUtil.userURL()}/book/read?id=${records.id}`, {
-                withCredentials: true,
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
@@ -15,7 +14,6 @@ const ReadListService = (function () {
             return "DELETE";
         } else {
             await axios.post(`${UrlUtil.userURL()}/book/read?id=${records.id}`, {}, {
-                withCredentials: true,
                 headers: {
                     "Authorization": `Basic ${SessionStorageUtil.getToken()}`
                 }
@@ -26,7 +24,6 @@ const ReadListService = (function () {
 
     const _getReadList = async () => {
         const response = await axios.get(`${UrlUtil.userURL()}/book/read`, {
-            withCredentials: true,
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
@@ -37,7 +34,6 @@ const ReadListService = (function () {
 
     const _checkContains = async (records) => {
         let list = await axios.get(`${UrlUtil.userURL()}/book/read`, {
-            withCredentials: true,
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }

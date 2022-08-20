@@ -25,6 +25,7 @@ const UserBooks = () => {
         filter: {},
         loading: false,
         columns: [],
+        search: "",
     })
 
 
@@ -34,18 +35,26 @@ const UserBooks = () => {
             navigate('/restriction')
         } else {
             const {pagination, filter, sorter} = state;
-            fetch({pagination, sorter, filter});
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
     function handleTableChange(pagination, filter, sorter) {
-        fetch({pagination, filter, sorter});
+        const {search} = state;
+        fetch({pagination, filter, sorter, search});
     }
 
     const onChange = async (e) => {
-        const {pagination} = state
+        const {pagination, filter, sorter} = state
 
-        fetch({pagination: pagination, search: e.target.value})
+        await setState(prevState => {
+            return {
+                ...prevState,
+                search: e.target.value
+            }
+        })
+
+        fetch({pagination: pagination, filter: filter, sorter: sorter, search: e.target.value})
     }
 
     const canLoad = () => {
@@ -57,8 +66,8 @@ const UserBooks = () => {
     }, 500)
 
     async function fetch(params) {
-        if (params.filter?.order === undefined) {
-            params.filter = {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
                 field: "id",
                 order: "ascend"
             };
@@ -67,6 +76,8 @@ const UserBooks = () => {
         setState(prevState => {
             return {
                 ...prevState,
+                sorter: params.sorter,
+                filter: params.filter,
                 loading: true
             }
         });
@@ -74,52 +85,56 @@ const UserBooks = () => {
         const data = await UserBookService.fetchBooks(params);
         const length = await BookService.getCount();
 
-        setState({
-            loading: false,
-            data: data,
-            pagination: {
-                ...params.pagination,
-                total: length
-            },
-            columns: [
-                {
-                    title: "Page",
-                    dataIndex: "id",
-                    render: (id) => <Button onClick={() => navigate(`/book/${id}`)}>Book's Page</Button>
+        setState(prevState => {
+            return {
+                ...prevState,
+                loading: false,
+                data: data,
+                pagination: {
+                    ...params.pagination,
+                    total: length
                 },
-                {
-                    title: "Name",
-                    dataIndex: "name",
-                    sorter: true,
-                    width: "20%"
-                },
-                {
-                    title: "Genre",
-                    dataIndex: "genre",
-                    render: (genre) => `${genre.name.charAt(0).toUpperCase() + genre.name.toLowerCase().slice(1)}`,
-                    filters: [
-                        {text: "Action", value: "ACTION"},
-                        {text: "Classic", value: "CLASSIC"},
-                        {text: "Fantasy", value: "FANTASY"},
-                        {text: "Horror", value: "HORROR"},
-                        {text: "Romance", value: "ROMANCE"},
-                        {text: "Sci-Fi", value: "SCI_FI"},
-                        {text: "History", value: "HISTORY"},
-                    ],
-                    onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
-                },
-                {
-                    title: "Author",
-                    dataIndex: "author",
-                    render: (author) => `${author?.name} ${author?.surname}`
-                },
-                {
-                    title: "Rate",
-                    dataIndex: "rate",
-                    sorter: true,
-                    render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
-                }
-            ]
+                columns: [
+                    {
+                        title: "Page",
+                        dataIndex: "id",
+                        render: (id) => <Button onClick={() => navigate(`/book/${id}`)}>Book's Page</Button>
+                    },
+                    {
+                        title: "Name",
+                        dataIndex: "name",
+                        sorter: true,
+                        width: "20%"
+                    },
+                    {
+                        title: "Genre",
+                        dataIndex: "genre",
+                        render: (genre) => `${genre.name.charAt(0).toUpperCase() + genre.name.toLowerCase().slice(1)}`,
+                        filters: [
+                            {text: "Action", value: "ACTION"},
+                            {text: "Classic", value: "CLASSIC"},
+                            {text: "Fantasy", value: "FANTASY"},
+                            {text: "Horror", value: "HORROR"},
+                            {text: "Romance", value: "ROMANCE"},
+                            {text: "Sci-Fi", value: "SCI_FI"},
+                            {text: "History", value: "HISTORY"},
+                        ],
+                        onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
+                    },
+                    {
+                        title: "Author",
+                        dataIndex: "author",
+                        render: (author) => `${author?.name} ${author?.surname}`
+                    },
+                    {
+                        title: "Rate",
+                        dataIndex: "rate",
+                        sorter: true,
+                        render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
+                    }
+                ],
+            }
+
         });
     }
 

@@ -97,7 +97,7 @@ function UserRead() {
             }
         })
 
-        const data = SessionStorageUtil.getUser().readList;
+        const data = await ReadListService.getReadList();
 
         setState(() => {
             return {

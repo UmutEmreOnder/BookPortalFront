@@ -12,7 +12,7 @@ const columns = [
     {
         title: "Name",
         dataIndex: "name",
-        sorter: (a, b) => a.name.localeCompare(b.name),
+        sorter: true,
         width: "20%"
     },
     {
@@ -38,12 +38,12 @@ const columns = [
     {
         title: "Read Count",
         dataIndex: "readCounter",
-        sorter: (a, b) => a.readCounter - b.readCounter
+        sorter: true
     },
     {
         title: "Favorite Count",
         dataIndex: "favoriteCounter",
-        sorter: (a, b) => a.favoriteCounter - b.favoriteCounter
+        sorter: true
     }
 ];
 
@@ -57,6 +57,12 @@ function AuthorBookList() {
             pageSize: 5
         },
         loading: false,
+        sorter: {
+            field: "id",
+            order: "ascend",
+        },
+        filter: {},
+        search: ""
     })
 
     useEffect(() => {
@@ -64,8 +70,8 @@ function AuthorBookList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination} = state;
-            fetch({pagination});
+            const {pagination, filter, sorter} = state;
+            fetch({pagination, filter, sorter});
         }
     }, [])
 
@@ -73,14 +79,22 @@ function AuthorBookList() {
         return SessionStorageUtil.getUser()?.roles[0].id === 3;
     }
 
-    function handleTableChange(pagination) {
-        fetch({pagination});
+    function handleTableChange(pagination, filter, sorter) {
+        const {search} = state;
+        fetch({pagination, filter, sorter, search});
     }
 
     const onChange = async (e) => {
-        const {pagination} = state
+        const {pagination, filter, sorter} = state
 
-        fetch({pagination: pagination, search: e.target.value})
+        await setState(prevState => {
+            return {
+                ...prevState,
+                search: e.target.value
+            }
+        })
+
+        fetch({pagination: pagination, filter: filter, sorter: sorter, search: e.target.value})
     }
 
     const debouncedSearch = debounce((e) => {
@@ -88,22 +102,33 @@ function AuthorBookList() {
     }, 500)
 
     async function fetch(params) {
+        if (params.sorter?.order === undefined) {
+            params.sorter = {
+                field: "id",
+                order: "ascend"
+            };
+        }
+
+
         setState(prevState => {
             return {
-                data: prevState.data,
-                pagination: prevState.pagination,
+                ...prevState,
+                sorter: params.sorter,
+                filter: params.filter,
                 loading: true
             }
         })
 
         const data = await AuthorBookService.fetchBooks(params);
+        const length = await AuthorBookService.getCount();
 
         setState(prevState => {
             return {
+                ...prevState,
                 data: data,
                 pagination: {
                     ...params.pagination,
-                    total: data.length
+                    total: length
                 },
                 loading: false
             }

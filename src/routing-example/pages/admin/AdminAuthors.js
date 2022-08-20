@@ -92,11 +92,19 @@ function AdminUserList() {
     }
 
     function handleTableChange(pagination, filter, sorter) {
-        fetch({pagination, filter, sorter});
+        const {search} = state;
+        fetch({pagination, filter, sorter, search});
     }
 
     const onChange = async (e) => {
         const {pagination, filter, sorter} = state
+
+        await setState(prevState => {
+            return {
+                ...prevState,
+                search: e.target.value
+            }
+        })
 
         fetch({pagination: pagination, filter: filter, sorter: sorter, search: e.target.value})
     }
@@ -115,8 +123,9 @@ function AdminUserList() {
 
         setState(prevState => {
             return {
-                data: prevState.data,
-                pagination: prevState.pagination,
+                ...prevState,
+                sorter: params.sorter,
+                filter: params.filter,
                 loading: true
             }
         })
@@ -124,8 +133,9 @@ function AdminUserList() {
         const data = await AdminAuthorService.fetchAuthors(params);
         const length = await AdminAuthorService.getCount();
 
-        setState(() => {
+        setState((prevState) => {
             return {
+                ...prevState,
                 data: data,
                 pagination: {
                     ...params.pagination,

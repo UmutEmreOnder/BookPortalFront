@@ -8,9 +8,10 @@ const AuthorBookService = (function () {
 
         const response = await axios.get(url, {
             params: {
-                results: params.pagination.pageSize,
+                pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
-                ...params
+                field: params.sorter?.field,
+                order: params.sorter?.order
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -20,8 +21,20 @@ const AuthorBookService = (function () {
         return response.data;
     };
 
+    const _getCount = async () => {
+        const response = await axios.get(`${UrlUtil.authorURL()}/book/count`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
+
     return {
         fetchBooks: _fetchBooks,
+        getCount: _getCount,
     };
 })();
 

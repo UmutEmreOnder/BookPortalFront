@@ -98,7 +98,7 @@ function UserFavorite() {
             }
         })
 
-        const data = SessionStorageUtil.getUser().favoriteList;
+        const data = await FavoriteListService.getFavoriteList();
 
         setState(() => {
             return {
