@@ -1,25 +1,32 @@
 import {Rate} from "antd";
 import UserBookService from "../../service/user/UserBookService";
-import {useEffect, useState} from "react";
+import React from "react";
 
-const RateSection = (bookId) => {
-    const [rate, setRate] = useState(0);
-
-    useEffect(() => {
-        getCurrentRate();
-    }, [])
-
-    const getCurrentRate = async () => {
-        UserBookService.fetchRate(bookId.bookId).then(async value => await setRate(value));
+class RateSection extends React.Component {
+    state = {
+        rate: undefined
     }
 
-    const onChange = async (value) => {
-        await UserBookService.addRate(bookId.bookId, value);
+    constructor(props) {
+        super(props);
+        this.getCurrentRate().then(value => this.setState({rate: value}));
     }
 
-    return (
-        <Rate defaultValue={rate} onChange={(value) => onChange(value)}></Rate>
-    )
+    getCurrentRate = async () => {
+        return await UserBookService.fetchRate(this.props.bookid);
+    }
+
+    onChange = async (value) => {
+        await UserBookService.addRate(this.props.bookid, value);
+    }
+
+    render() {
+        if (this.state.rate !== undefined) {
+            return (
+                <Rate defaultValue={this.state.rate} onChange={(value) => this.onChange(value)}></Rate>
+            )
+        }
+    }
 }
 
 export default RateSection;
