@@ -20,6 +20,7 @@ const AuthorRequestService = (function () {
                 pageSize: params.pagination.pageSize,
                 field: params.sorter?.field,
                 order: params.sorter?.order,
+                genre: params.filter?.genreName?.join(",")
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
@@ -36,6 +37,7 @@ const AuthorRequestService = (function () {
                 pageSize: params.pagination.pageSize,
                 field: params.sorter?.field,
                 order: params.sorter?.order,
+                respond: params.filter?.respond?.join(",")
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`

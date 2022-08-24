@@ -2,12 +2,11 @@ import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Table} from "antd";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageService from "../../util/SessionStorageUtil";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {useNavigate} from "react-router-dom";
-import FavoriteListService from "../../service/user/lists/FavoriteListService";
 import UserService from "../../service/user/UserService";
-import SessionStorageService from "../../util/SessionStorageUtil";
 import ReadListService from "../../service/user/lists/ReadListService";
 
 function UserRead() {
@@ -61,7 +60,8 @@ function UserRead() {
                             handleTableChange()
                         }} style={{marginRight: "20px"}}>Delete</Button>
                     </>
-                )}
+                )
+            }
         }
     ]
 

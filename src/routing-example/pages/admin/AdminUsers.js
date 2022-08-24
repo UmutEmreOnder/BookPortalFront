@@ -37,6 +37,7 @@ function AdminUserList() {
         {
             title: "Surname",
             dataIndex: "surname",
+            sorter: true,
             width: "20%"
         },
         {
@@ -47,10 +48,12 @@ function AdminUserList() {
         {
             title: "Email",
             dataIndex: "email",
+            sorter: true
         },
         {
             title: "Username",
             dataIndex: "username",
+            sorter: true
         },
         {
             title: "Delete",
@@ -84,8 +87,8 @@ function AdminUserList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination, filter, sorter} = state;
-            fetch({pagination, filter, sorter});
+            const {pagination, filter, sorter, search} = state;
+            fetch({pagination, filter, sorter, search});
         }
     }, [])
 

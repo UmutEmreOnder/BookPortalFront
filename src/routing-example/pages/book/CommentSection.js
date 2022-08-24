@@ -1,17 +1,40 @@
 import React, {useEffect, useState} from 'react';
 import 'antd/dist/antd.css';
-import {Avatar, Button, Comment, Form, Input, List, Pagination} from 'antd';
+import {Button, Comment, Form, Input, List, Pagination} from 'antd';
 import CommentService from "../../service/book/CommentService";
+import ToastifyUtil from "../../util/ToastifyUtil";
+import MessageUtil from "../../util/MessageUtil";
+import SessionStorageUtil from "../../util/SessionStorageUtil";
 
 const {TextArea} = Input;
 
-const CommentList = ({comments}) => {
+const CommentList = ({comments, fetch}) => {
     return (
         <List
             dataSource={comments}
             header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
             itemLayout="horizontal"
-            renderItem={(props) => <Comment {...props} />}
+            renderItem={(props) => {
+                if (props.uname === SessionStorageUtil.getUser().username) {
+                    return (
+                        <>
+                            <Comment {...props} />
+                            <a style={{fontSize: "10px", color: "red"}} onClick={async () => {
+                                await CommentService.deleteComment(props.id)
+                                ToastifyUtil.success(MessageUtil.deleteCommentSuccess());
+                                fetch(1, 5)
+                            }}>Delete</a>
+                        </>
+                    )
+                } else {
+                    return (
+                        <>
+                            <Comment {...props} />
+                        </>
+                    )
+                }
+            }
+            }
         />
     )
 };
@@ -30,7 +53,7 @@ const Editor = ({onChange, onSubmit, submitting, value}) => (
 );
 
 const CommentSection = (bookId) => {
-    let listComments = []
+    let commentsList = []
     const [comments, setComments] = useState([]);
     const [submitting, setSubmitting] = useState(false);
     const [value, setValue] = useState('');
@@ -42,15 +65,16 @@ const CommentSection = (bookId) => {
     async function fetch(page, pageSize) {
         CommentService.fetchComments(bookId.bookId, page, pageSize).then(value => {
             for (let i = 0; i < value.length; i++) {
-                listComments.push({
+                commentsList.push({
+                    id: value[i].id,
                     author: `${value[i].user.name} ${value[i].user.surname}`,
-                    avatar: 'https://joeschmoe.io/api/v1/random',
-                    content: <p>{value[i].comment}</p>
+                    content: <p>{value[i].comment}</p>,
+                    uname: value[i].user.username,
                 })
             }
         })
 
-        await setComments(listComments);
+        setComments(commentsList);
     }
 
     const handleSubmit = async () => {
@@ -69,14 +93,13 @@ const CommentSection = (bookId) => {
     };
 
     const onChange = async (page, pageSize) => {
-        listComments = []
+        commentsList = []
         await fetch(page, pageSize);
     }
 
     return (
         <div>
             <Comment
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo"/>}
                 content={
                     <Editor
                         onChange={handleChange}
@@ -86,7 +109,7 @@ const CommentSection = (bookId) => {
                     />
                 }
             />
-            {comments.length > 0 && <CommentList comments={comments}/>}
+            <CommentList comments={comments}/>
 
             <Pagination simple defaultCurrent={1} pageSize={5} total={50}
                         onChange={(page, pageSize) => onChange(page, pageSize)}/>

@@ -10,6 +10,8 @@ const AdminRequestService = (function () {
                 page: params.pagination.current,
                 field: params.sorter?.field,
                 order: params.sorter?.order,
+                author: params.filter?.author?.join(","),
+                genre: params.filter?.genre?.join(",")
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`

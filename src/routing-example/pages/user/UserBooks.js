@@ -8,6 +8,8 @@ import {debounce} from "lodash";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import {useNavigate} from "react-router-dom";
 import BookService from "../../service/book/BookService";
+import ReadListService from "../../service/user/lists/ReadListService";
+import FavoriteListService from "../../service/user/lists/FavoriteListService";
 
 const UserBooks = () => {
     const navigate = useNavigate();
@@ -34,8 +36,8 @@ const UserBooks = () => {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination, filter, sorter} = state;
-            fetch({pagination, filter, sorter});
+            const {pagination, filter, sorter, search} = state;
+            fetch({pagination, filter, sorter, search});
         }
     }, [])
 
@@ -83,6 +85,8 @@ const UserBooks = () => {
         });
 
         const data = await UserBookService.fetchBooks(params);
+        const readList = await ReadListService.getReadList();
+        const favoriteList = await FavoriteListService.getFavoriteList();
         const length = await BookService.getCount();
 
         setState(prevState => {
@@ -119,23 +123,66 @@ const UserBooks = () => {
                             {text: "Sci-Fi", value: "SCI_FI"},
                             {text: "History", value: "HISTORY"},
                         ],
-                        onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
                     },
                     {
                         title: "Author",
                         dataIndex: "author",
-                        render: (author) => `${author?.name} ${author?.surname}`
+                        render: (author) => `${author?.name} ${author?.surname}`,
+                        filters: [
+                            {text: "Aziz Nesin", value: "aziz"},
+                            {text: "Nazim Hikmet", value: "nazim"},
+                        ],
                     },
                     {
                         title: "Rate",
                         dataIndex: "rate",
                         sorter: true,
                         render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
+                    },
+                    {
+                        title: 'Read List',
+                        render: (text, record) => (
+                            <input type={"checkbox"} defaultChecked={checkReadList(record, readList)}
+                                   onClick={async () => {
+                                       const response = await ReadListService.addOrDrop(record);
+                                       response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
+                                   }}/>
+                        ),
+                    },
+                    {
+                        title: 'Favorite List',
+                        render: (text, record) => (
+                            <input type={"checkbox"} defaultChecked={checkFavoriteList(record, favoriteList)}
+                                   onClick={async () => {
+                                       const response = await FavoriteListService.addOrDrop(record)
+                                       response === "ADD" ? ToastifyUtil.success(MessageUtil.addBook()) : ToastifyUtil.success(MessageUtil.removeBook());
+                                   }}/>
+                        ),
                     }
                 ],
             }
 
         });
+    }
+
+    const checkReadList = (record, list) => {
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].name === record.name) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    const checkFavoriteList = (record, list) => {
+        for (let i = 0; i < list.length; i++) {
+            if (list[i].name === record.name) {
+                return true
+            }
+        }
+
+        return false
     }
 
     const {data, pagination, loading, columns} = state;

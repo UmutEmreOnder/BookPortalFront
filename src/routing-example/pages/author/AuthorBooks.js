@@ -32,8 +32,7 @@ const columns = [
             {text: "Romance", value: "ROMANCE"},
             {text: "Sci-Fi", value: "SCI_FI"},
             {text: "History", value: "HISTORY"},
-        ],
-        onFilter: (value, record) => record.genre.name.indexOf(value) === 0,
+        ]
     },
     {
         title: "Read Count",
@@ -70,8 +69,8 @@ function AuthorBookList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination, filter, sorter} = state;
-            fetch({pagination, filter, sorter});
+            const {pagination, filter, sorter, search} = state;
+            fetch({pagination, filter, sorter, search});
         }
     }, [])
 

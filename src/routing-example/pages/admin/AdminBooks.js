@@ -59,6 +59,10 @@ function AdminBookList() {
         {
             title: "Author",
             dataIndex: "author",
+            filters: [
+                {text: "Aziz Nesin", value: "aziz"},
+                {text: "Nazim Hikmet", value: "nazim"},
+            ],
             render: (author) => `${author?.name} ${author?.surname}`
         },
         {
@@ -102,8 +106,8 @@ function AdminBookList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination, filter, sorter} = state;
-            fetch({pagination, filter, sorter});
+            const {pagination, filter, sorter, search} = state;
+            fetch({pagination, filter, sorter, search});
         }
     }, [])
 

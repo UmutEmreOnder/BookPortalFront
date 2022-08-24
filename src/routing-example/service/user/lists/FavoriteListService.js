@@ -36,7 +36,7 @@ const ReadListService = (function () {
             }
         })
 
-        return response.data
+        return response.data;
     }
 
     const _checkContains = async (records) => {

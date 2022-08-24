@@ -37,7 +37,7 @@ const Verify = () => {
 
         if (response) {
             navigate('/')
-            ToastifyUtil.success(MessageUtil.sentSucces());
+            ToastifyUtil.success(MessageUtil.sentSuccess());
         } else {
             ToastifyUtil.error(MessageUtil.sentFail());
         }

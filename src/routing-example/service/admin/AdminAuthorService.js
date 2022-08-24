@@ -4,10 +4,11 @@ import UrlUtil from "../../util/UrlUtil";
 
 const AdminAuthorService = (function () {
     const _getAuthors = async (params) => {
-        const url = params.search ? `${UrlUtil.adminURL()}/author/like/${params.search}` : `${UrlUtil.adminURL()}/author/`;
+        const url = `${UrlUtil.adminURL()}/author/`;
 
         const response = await axios.get(url, {
             params: {
+                keyword: params.search,
                 pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
                 field: params.sorter?.field,

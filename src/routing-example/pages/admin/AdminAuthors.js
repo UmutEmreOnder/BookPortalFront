@@ -24,6 +24,7 @@ function AdminUserList() {
         },
         filter: {},
         loading: false,
+        search: "",
     })
 
     const columns = [
@@ -36,7 +37,8 @@ function AdminUserList() {
         {
             title: "Surname",
             dataIndex: "surname",
-            width: "20%"
+            width: "20%",
+            sorter: true
         },
         {
             title: "Age",
@@ -46,10 +48,12 @@ function AdminUserList() {
         {
             title: "Email",
             dataIndex: "email",
+            sorter: true
         },
         {
             title: "Username",
             dataIndex: "username",
+            sorter: true
         },
         {
             title: "Delete",
@@ -82,8 +86,8 @@ function AdminUserList() {
             ToastifyUtil.error(MessageUtil.noPermission())
             navigate('/restriction')
         } else {
-            const {pagination, filter, sorter} = state;
-            fetch({pagination, filter, sorter});
+            const {pagination, filter, sorter, search} = state;
+            fetch({pagination, filter, sorter, search});
         }
     }, [])
 

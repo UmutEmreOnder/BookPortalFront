@@ -14,18 +14,27 @@ const CommentService = (function () {
     }
 
     const _addComment = async (bookId, comment) => {
-        const response = await axios.post(`${UrlUtil.userURL()}/comment?bookId=${bookId}`, {comment: comment}, {
+        return await axios.post(`${UrlUtil.userURL()}/comment?bookId=${bookId}`, {comment: comment}, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        });
+    }
+
+    const _deleteComment = async (commentId) => {
+        const response = await axios.delete(`${UrlUtil.userURL()}/comment?id=${commentId}`, {
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`
             }
         })
 
-        return response;
+        return response.data;
     }
 
     return {
         fetchComments: _fetchComments,
         addComment: _addComment,
+        deleteComment: _deleteComment,
     }
 })();
 

@@ -49,7 +49,6 @@ function AuthorResponse() {
                 {text: "Accepted", value: "ACCEPTED"},
                 {text: "Denied", value: "DENIED"},
             ],
-            onFilter: (value, record) => record.respond.indexOf(value) === 0,
         }
     ]
 

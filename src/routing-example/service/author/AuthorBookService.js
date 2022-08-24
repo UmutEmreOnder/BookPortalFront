@@ -4,14 +4,16 @@ import UrlUtil from "../../util/UrlUtil";
 
 const AuthorBookService = (function () {
     const _fetchBooks = async (params) => {
-        const url = params.search ? `${UrlUtil.authorURL()}/book/like/${params.search}` : `${UrlUtil.authorURL()}/book/`;
+        const url = `${UrlUtil.authorURL()}/book/`;
 
         const response = await axios.get(url, {
             params: {
+                keyword: params.search,
                 pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
                 field: params.sorter?.field,
-                order: params.sorter?.order
+                order: params.sorter?.order,
+                genre: params.filter?.genre?.join(",")
             },
             headers: {
                 "Authorization": `Basic ${SessionStorageUtil.getToken()}`

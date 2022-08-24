@@ -4,10 +4,11 @@ import UrlUtil from "../../util/UrlUtil";
 
 const AdminUserService = (function () {
     const _getUsers = async (params) => {
-        const url = params.search ? `${UrlUtil.adminURL()}/user/like/${params.search}` : `${UrlUtil.adminURL()}/user/`;
+        const url =`${UrlUtil.adminURL()}/user/`;
 
         const response = await axios.get(url, {
             params: {
+                keyword: params.search,
                 pageSize: params.pagination.pageSize,
                 page: params.pagination.current,
                 field: params.sorter?.field,

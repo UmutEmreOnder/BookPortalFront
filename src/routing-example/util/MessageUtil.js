@@ -95,6 +95,9 @@ const MessageUtil = function () {
         return "The Request Cannot Be Sent!"
     }
 
+    const _deleteCommentSuccess = () => {
+        return "The Comment Deleted Successfully!"
+    }
 
     return {
         loginSuccess: _loginSuccess,
@@ -118,9 +121,10 @@ const MessageUtil = function () {
         deleteAuthorSuccess: _deleteAuthorSuccess,
         updateFailed: _updateFailed,
         noPermission: _noPermission,
-        sentSucces: _sentSuccess,
+        sentSuccess: _sentSuccess,
         sentFail: _sentFail,
         requestFailed: _requestFail,
+        deleteCommentSuccess: _deleteCommentSuccess,
     }
 }();
 

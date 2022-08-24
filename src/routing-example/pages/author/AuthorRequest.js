@@ -54,7 +54,6 @@ function AuthorRequest() {
                 {text: "History", value: "HISTORY"},
             ],
             render: (respond) => `${respond.charAt(0).toUpperCase() + respond.toLowerCase().slice(1)}`,
-            onFilter: (value, record) => record.genreName.indexOf(value) === 0
         }
     ]
 
@@ -83,6 +82,7 @@ function AuthorRequest() {
                 order: "ascend"
             };
         }
+
 
         setState(prevState => {
             return {

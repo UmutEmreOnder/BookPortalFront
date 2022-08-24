@@ -3,13 +3,12 @@ import "antd/dist/antd.css";
 
 import {Button, Table} from "antd";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
+import SessionStorageService from "../../util/SessionStorageUtil";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import {useNavigate} from "react-router-dom";
 import FavoriteListService from "../../service/user/lists/FavoriteListService";
-import updateUser from "./UpdateUser";
 import UserService from "../../service/user/UserService";
-import SessionStorageService from "../../util/SessionStorageUtil";
 
 function UserFavorite() {
     const navigate = useNavigate();
@@ -53,16 +52,17 @@ function UserFavorite() {
         {
             title: "Action",
             render: (record) => {
-            return (
-            <>
-                <Button onClick={async () => {
-                    await FavoriteListService.drop(record);
-                    ToastifyUtil.success(MessageUtil.removeBook())
-                    await setUserToken()
-                    handleTableChange()
-                }} style={{marginRight: "20px"}}>Delete</Button>
-            </>
-            )}
+                return (
+                    <>
+                        <Button onClick={async () => {
+                            await FavoriteListService.drop(record);
+                            ToastifyUtil.success(MessageUtil.removeBook())
+                            await setUserToken()
+                            handleTableChange()
+                        }} style={{marginRight: "20px"}}>Delete</Button>
+                    </>
+                )
+            }
         }
     ]
 

@@ -6,7 +6,6 @@ import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
 import SessionStorageUtil from "../../util/SessionStorageUtil";
 import {useNavigate} from "react-router-dom";
-import AdminUserService from "../../service/admin/AdminUserService";
 
 function AdminBookList() {
     const navigate = useNavigate();
@@ -61,6 +60,10 @@ function AdminBookList() {
         {
             title: "Author",
             dataIndex: "author",
+            filters: [
+                {text: "Aziz Nesin", value: "aziz"},
+                {text: "Nazim Hikmet", value: "nazim"},
+            ],
             render: (author) => `${author?.name} ${author?.surname}`
         },
         {
