@@ -99,6 +99,10 @@ const MessageUtil = function () {
         return "The Comment Deleted Successfully!"
     }
 
+    const _uploadFailed = (fileName) => {
+        return `${fileName} is not a png file`
+    }
+
     return {
         loginSuccess: _loginSuccess,
         loginFailed: _loginFailed,
@@ -125,6 +129,7 @@ const MessageUtil = function () {
         sentFail: _sentFail,
         requestFailed: _requestFail,
         deleteCommentSuccess: _deleteCommentSuccess,
+        uploadFailed: _uploadFailed,
     }
 }();
 

@@ -31,10 +31,21 @@ const CommentService = (function () {
         return response.data;
     }
 
+    const _deleteCommentAdmin = async (commentId) => {
+        const response = await axios.delete(`${UrlUtil.adminURL()}/comment?id=${commentId}`, {
+            headers: {
+                "Authorization": `Basic ${SessionStorageUtil.getToken()}`
+            }
+        })
+
+        return response.data;
+    }
+
     return {
         fetchComments: _fetchComments,
         addComment: _addComment,
         deleteComment: _deleteComment,
+        deleteCommentAdmin: _deleteCommentAdmin
     }
 })();
 

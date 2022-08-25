@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "antd/dist/antd.css";
-import {Button, Input, Popconfirm, Table} from "antd";
+import {Button, Input, Popconfirm, Rate, Table} from "antd";
 import {useNavigate} from "react-router-dom";
 import AdminBookService from "../../service/admin/AdminBookService";
 import ToastifyUtil from "../../util/ToastifyUtil";
@@ -30,6 +30,11 @@ function AdminBookList() {
     })
 
     const columns = [
+        {
+            title: "Page",
+            dataIndex: "id",
+            render: (id) => <Button onClick={() => navigate(`/book/${id}`)}>Book's Page</Button>
+        },
         {
             title: "Name",
             dataIndex: "name",
@@ -74,6 +79,12 @@ function AdminBookList() {
             title: "Favorite Count",
             dataIndex: "favoriteCounter",
             sorter: true,
+        },
+        {
+            title: "Rate",
+            dataIndex: "rate",
+            sorter: true,
+            render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
         },
         {
             title: "Delete",
@@ -173,7 +184,7 @@ function AdminBookList() {
 
     return (
         <>
-            <div style={{textAlign: "center", margin: "25px"}}>
+            <div style={{textAlign: "center", margin: "15px"}}>
                 <h2>List of Books</h2>
             </div>
 

@@ -137,7 +137,7 @@ const UserBooks = () => {
                         title: "Rate",
                         dataIndex: "rate",
                         sorter: true,
-                        render: (rate) => <Rate defaultValue={rate} disabled={true}></Rate>
+                        render: (rate) => <Rate defaultValue={rate} disabled={true} allowHalf></Rate>
                     },
                     {
                         title: 'Read List',

@@ -26,7 +26,19 @@ const CommentList = ({comments, fetch}) => {
                             }}>Delete</a>
                         </>
                     )
-                } else {
+                } else if (SessionStorageUtil.getUser()?.roles[0].id === 1) {
+                    return (
+                        <>
+                            <Comment {...props} />
+                            <a style={{fontSize: "10px", color: "red"}} onClick={async () => {
+                                await CommentService.deleteCommentAdmin(props.id)
+                                ToastifyUtil.success(MessageUtil.deleteCommentSuccess());
+                                fetch(1, 5)
+                            }}>Delete</a>
+                        </>
+                    )
+                }
+                else {
                     return (
                         <>
                             <Comment {...props} />
@@ -65,11 +77,14 @@ const CommentSection = (bookId) => {
     async function fetch(page, pageSize) {
         CommentService.fetchComments(bookId.bookId, page, pageSize).then(value => {
             for (let i = 0; i < value.length; i++) {
+                const {id, comment, user} = value[i];
+                const {name, surname, username} = user;
+
                 commentsList.push({
-                    id: value[i].id,
-                    author: `${value[i].user.name} ${value[i].user.surname}`,
-                    content: <p>{value[i].comment}</p>,
-                    uname: value[i].user.username,
+                    id: id,
+                    author: `${name} ${surname}`,
+                    content: <p>{comment}</p>,
+                    uname: username,
                 })
             }
         })

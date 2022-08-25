@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Button, Form, Input, Select} from "antd";
+import {Button, Form, Input, Select, Upload} from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 import AuthorRequestService from "../../service/author/AuthorRequestService";
 import ToastifyUtil from "../../util/ToastifyUtil";
 import MessageUtil from "../../util/MessageUtil";
@@ -11,6 +12,8 @@ const Request = () => {
     const [credentials, setCredentials] = useState({});
 
     const onFinish = async () => {
+        console.log(credentials)
+
         const response = await AuthorRequestService.create(credentials);
 
         if (response) {
@@ -51,6 +54,18 @@ const Request = () => {
         })
     }
 
+    const props = {
+        beforeUpload: (file) => {
+            const isPNG = file.type === 'image/png';
+
+            if (!isPNG) {
+                ToastifyUtil.error(MessageUtil.uploadFailed(file.name))
+            }
+
+            return isPNG || Upload.LIST_IGNORE;
+        }
+    };
+
     return (
         <>
             <Form name="basic" labelCol={{span: 8}} wrapperCol={{span: 16}} initialValues={{remember: true}}
@@ -78,6 +93,12 @@ const Request = () => {
                         <Select.Option value="SCI_FI">Sci-Fi</Select.Option>
                         <Select.Option value="HISTORY">History</Select.Option>
                     </Select>
+                </Form.Item>
+
+                <Form.Item label="Cover Photo" name="coverPhoto">
+                    <Upload {...props}>
+                        <Button icon={<UploadOutlined />}>Upload</Button>
+                    </Upload>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>
