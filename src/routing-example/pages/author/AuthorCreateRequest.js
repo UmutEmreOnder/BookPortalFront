@@ -82,6 +82,16 @@ const Request = () => {
                     <Input onChange={handleChange} name="bookIsbn" value={credentials.bookIsbn}/>
                 </Form.Item>
 
+                <Form.Item label="Number of Pages" name="page"
+                           rules={[{required: true, message: "Please input number of pages of the book!"}]}>
+                    <Input onChange={handleChange} name="page" value={credentials.page}/>
+                </Form.Item>
+
+                <Form.Item label="Description" name="description"
+                           rules={[{required: true, message: "Please input description of the book!"}]}>
+                    <Input onChange={handleChange} name="description" value={credentials.description}/>
+                </Form.Item>
+
                 <Form.Item label="Genre" name="genreName"
                            rules={[{required: true, message: "Please select the genre of the Book!"}]}>
                     <Select style={{width: 120}} allowClear onChange={handleGenreChange}>
@@ -95,10 +105,9 @@ const Request = () => {
                     </Select>
                 </Form.Item>
 
-                <Form.Item label="Cover Photo" name="coverPhoto">
-                    <Upload {...props}>
-                        <Button icon={<UploadOutlined />}>Upload</Button>
-                    </Upload>
+                <Form.Item label="Cover Photo URL" name="photoURL"
+                           rules={[{required: true, message: "Please input URL of the cover photo!"}]}>
+                    <Input onChange={handleChange} name="photoURL" value={credentials.photoURL}/>
                 </Form.Item>
 
                 <Form.Item wrapperCol={{offset: 8, span: 16}}>

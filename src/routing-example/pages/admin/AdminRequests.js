@@ -67,6 +67,16 @@ function AdminBookList() {
             render: (author) => `${author?.name} ${author?.surname}`
         },
         {
+            title: "Number of Pages",
+            dataIndex: "page",
+            sorter: true,
+        },
+        {
+            title: "Cover Photo",
+            dataIndex: "photoURL",
+            render: (photoURL) => <a href={photoURL}>Click Here</a>,
+        },
+        {
             title: "Action",
             render: (record) => {
                 return (

@@ -20,11 +20,11 @@ const BookPage = () => {
 
     return (
         <>
-            <div style={{width: "fit-content", display: "inline-block", marginLeft: "200px"}}>
-                <img style={{marginLeft: "100px", border: "1px solid black", marginTop: "50px"}}
-                     src={`https://picsum.photos/250/400`} alt={"Cover Photo"}/>
+            <div style={{width: "fit-content", display: "inline-block", marginLeft: "100px"}}>
+                <img style={{marginLeft: "100px", border: "1px solid black", marginTop: "50px", width: "300px", height: "500px"}}
+                     src={state.response?.photoURL} alt={"Cover Photo"}/>
 
-                <div style={{float: "right", marginLeft: "200px"}}>
+                <div style={{float: "right", marginLeft: "100px"}}>
                     <CommentSection bookId={bookId}></CommentSection>
                 </div>
 
@@ -36,6 +36,10 @@ const BookPage = () => {
                     <h3>Author: {state.response?.author.name + " " + state.response?.author.surname}</h3>
                     <hr/>
                     <h3>Genre: {state.response?.genre.name.charAt(0).toUpperCase() + state.response?.genre.name.toLowerCase().slice(1)}</h3>
+                    <hr/>
+                    <h3>Number of Pages: {state.response?.page}</h3>
+                    <hr/>
+                    <h3 style={{width: "500px"}}>Description: {state.response?.description}</h3>
                     <hr/>
                     <RateSection bookid={bookId}></RateSection>
                 </div>

@@ -71,6 +71,11 @@ function AdminBookList() {
             render: (author) => `${author?.name} ${author?.surname}`
         },
         {
+            title: "Number of Pages",
+            dataIndex: "page",
+            sorter: true,
+        },
+        {
             title: "Read Count",
             dataIndex: "readCounter",
             sorter: true,
