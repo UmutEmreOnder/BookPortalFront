@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  bookportal_frontend:
+    image: tedex123/bookportal-frontend:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - bookportal-backend
+    networks:
+      - bookportal-network
+
+  bookportal-backend:
+    image: tedex123/bookportal-backend:latest
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - bookportal-mysql
+    networks:
+      - bookportal-network
+    environment:
+      - RDS_HOSTNAME=bookportal-mysql
+      - RDS_PORT=3306
+
+  bookportal-mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_USER=obss
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=bookportal
+    networks:
+      - bookportal-network
+    volumes:
+      - bookportal-volumes:/var/lib/mysql
+
+networks:
+  bookportal-network:
+
+volumes:
+  bookportal-volumes:
